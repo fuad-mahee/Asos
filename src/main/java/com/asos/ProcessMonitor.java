@@ -30,8 +30,6 @@ public class ProcessMonitor implements Runnable {
             Set<Long> currentPids = ProcessHandle.allProcesses()
                     .map(ProcessHandle::pid)
                     .collect(Collectors.toSet());
-
-            // Detect started processes
             Set<Long> started = new HashSet<>(currentPids);
             started.removeAll(previousPids);
             for (Long pid : started) {
@@ -42,14 +40,11 @@ public class ProcessMonitor implements Runnable {
                     listener.onProcessEvent("Started: PID=" + pid + ", App=" + appName + ", CMD=" + cmd + ", Time=" + Instant.now());
                 }
             }
-
-            // Detect stopped processes
             Set<Long> stopped = new HashSet<>(previousPids);
             stopped.removeAll(currentPids);
             for (Long pid : stopped) {
                 listener.onProcessEvent("Stopped: PID=" + pid + ", Time=" + Instant.now());
             }
-
             previousPids = currentPids;
             try {
                 Thread.sleep(pollIntervalMillis);
@@ -60,16 +55,13 @@ public class ProcessMonitor implements Runnable {
         }
     }
 
-    // Extracts a user-friendly app name from the command path
     private static String extractAppName(String cmdPath) {
         if (cmdPath == null || cmdPath.isEmpty()) return "Unknown";
-        // Try to extract the .app name if present (macOS)
         int appIdx = cmdPath.lastIndexOf(".app/");
         if (appIdx > 0) {
             int start = cmdPath.lastIndexOf('/', appIdx - 1) + 1;
-            return cmdPath.substring(start, appIdx + 4); // e.g., Firefox.app
+            return cmdPath.substring(start, appIdx + 4);
         }
-        // Otherwise, just use the last part of the path
         int slashIdx = cmdPath.lastIndexOf('/');
         if (slashIdx >= 0 && slashIdx < cmdPath.length() - 1) {
             return cmdPath.substring(slashIdx + 1);

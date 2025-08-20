@@ -22,14 +22,12 @@ public class FileSystemMonitor implements Runnable {
     public void run() {
         try (WatchService watchService = FileSystems.getDefault().newWatchService()) {
             pathToWatch.register(watchService, ENTRY_CREATE, ENTRY_DELETE, ENTRY_MODIFY);
-
             while (true) {
-                WatchKey key = watchService.take(); // blocks until an event occurs
+                WatchKey key = watchService.take();
                 for (WatchEvent<?> event : key.pollEvents()) {
                     WatchEvent.Kind<?> kind = event.kind();
                     Path changed = pathToWatch.resolve((Path) event.context());
                     listener.onProgress("Event: " + kind.name() + " on " + changed);
-                    // Here, add logic to check if the event matches the current instruction step
                 }
                 key.reset();
             }
