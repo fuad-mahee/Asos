@@ -1,0 +1,161 @@
+{
+  "id": "file-navigation",
+  "name": "Master File Navigation",
+  "description": "Learn essential file and folder operations that every computer user should know",
+  "difficulty": "beginner",
+  "estimatedTime": "15 minutes",
+  "prerequisites": [],
+  "tags": ["files", "folders", "navigation", "basic"],
+  "character": {
+    "welcomeMessage": "আছস? Ready to become a file management pro? 📁\nI'll teach you everything about files and folders!\nIt's easier than you think!",
+    "completionMessage": "🎉 Amazing! You've mastered the basics of file navigation!\nNow you can organize your computer like a pro!\nআছস? that wasn't hard at all, right? 😊"
+  },
+  "steps": [
+    {
+      "stepNumber": 1,
+      "instruction": "Open File Explorer (Windows) or Finder (Mac)",
+      "detailedInstruction": "On Windows: Click the folder icon in your taskbar or press Windows key + E. On Mac: Click the Finder icon in your dock or press Cmd + Space and type 'Finder'.",
+      "expectedActions": ["file_manager_opened", "explorer_window_visible"],
+      "validation": {
+        "processNames": ["explorer.exe", "Finder.app", "nautilus", "dolphin"],
+        "windowTitles": ["explorer", "finder", "file manager"],
+        "timeout": 60
+      },
+      "successMessage": "Perfect! File Explorer is open. Now let's navigate to your Desktop.",
+      "errorMessages": {
+        "timeout": "Take your time! Look for a folder icon to open File Explorer.",
+        "wrongApp": "Make sure you open File Explorer or Finder, not a web browser."
+      },
+      "hints": [
+        "Windows: Look for a yellow folder icon in your taskbar",
+        "Windows: You can also press Windows key + E",
+        "Mac: Look for the Finder icon (blue and white face) in your dock",
+        "The window should show your folders and files"
+      ]
+    },
+    {
+      "stepNumber": 2,
+      "instruction": "Navigate to your Desktop folder",
+      "detailedInstruction": "In File Explorer/Finder, click on 'Desktop' in the left sidebar, or navigate to Desktop through your user folder. You should see the same files and folders that are on your desktop screen.",
+      "expectedActions": ["desktop_folder_opened", "location_changed"],
+      "validation": {
+        "currentPath": ["Desktop", "desktop"],
+        "windowTitle": ["Desktop"],
+        "timeout": 45
+      },
+      "successMessage": "Great! You're now in the Desktop folder. Let's create a new folder here.",
+      "errorMessages": {
+        "timeout": "Look for 'Desktop' in the left sidebar and click on it.",
+        "wrongLocation": "Make sure you're in the Desktop folder, not another location."
+      },
+      "hints": [
+        "Look for 'Desktop' in the left sidebar and click it",
+        "The address bar should show 'Desktop' or your username/Desktop",
+        "You should see the same items as on your desktop screen",
+        "If you can't find it, try clicking on your username first"
+      ]
+    },
+    {
+      "stepNumber": 3,
+      "instruction": "Right-click in empty space and create a new folder",
+      "detailedInstruction": "Right-click in an empty area of the Desktop folder (not on any existing file). Select 'New' > 'Folder' from the menu. A new folder will appear ready to be named.",
+      "expectedActions": ["context_menu_opened", "new_folder_created"],
+      "validation": {
+        "newFolderExists": true,
+        "folderLocation": "Desktop",
+        "timeout": 60
+      },
+      "successMessage": "Excellent! You created a new folder. Now let's give it a meaningful name.",
+      "errorMessages": {
+        "timeout": "Right-click in an empty space (not on a file) and select New > Folder.",
+        "noFolder": "Make sure you select 'New' > 'Folder' from the right-click menu."
+      },
+      "hints": [
+        "Right-click in an empty area, not on an existing file",
+        "Look for 'New' in the menu, then 'Folder'",
+        "A new folder should appear with a highlighted name",
+        "Different systems might say 'New Folder' or 'Create Folder'"
+      ]
+    },
+    {
+      "stepNumber": 4,
+      "instruction": "Name the folder 'LearningWithAsos' and press Enter",
+      "detailedInstruction": "The new folder should have its name highlighted. Type 'LearningWithAsos' (without quotes) to replace the default name, then press Enter to confirm the new name.",
+      "expectedActions": ["folder_renamed", "name_confirmed"],
+      "validation": {
+        "folderName": "LearningWithAsos",
+        "folderLocation": "Desktop",
+        "timeout": 30
+      },
+      "successMessage": "🎉 Perfect! You've successfully created and named your folder!\nYou now know the basics of file management!",
+      "errorMessages": {
+        "timeout": "Type the new name and press Enter to confirm it.",
+        "wrongName": "Make sure you type 'LearningWithAsos' as the folder name."
+      },
+      "hints": [
+        "The folder name should be highlighted - just start typing",
+        "Type: LearningWithAsos",
+        "Press Enter when you're done typing",
+        "If the name isn't highlighted, try right-clicking the folder and selecting 'Rename'"
+      ]
+    },
+    {
+      "stepNumber": 5,
+      "instruction": "Double-click to open your new folder",
+      "detailedInstruction": "Double-click on the 'LearningWithAsos' folder you just created. This will open the folder and show its contents (which should be empty since it's new).",
+      "expectedActions": ["folder_opened", "inside_folder"],
+      "validation": {
+        "currentPath": ["LearningWithAsos"],
+        "folderOpen": true,
+        "timeout": 30
+      },
+      "successMessage": "Great! You opened the folder. It's empty because it's brand new.",
+      "errorMessages": {
+        "timeout": "Double-click on the LearningWithAsos folder to open it.",
+        "wrongFolder": "Make sure you're double-clicking on the right folder."
+      },
+      "hints": [
+        "Double-click means click twice quickly",
+        "Click on the LearningWithAsos folder",
+        "The folder should open and show an empty space inside",
+        "The address bar should show the folder name"
+      ]
+    },
+    {
+      "stepNumber": 6,
+      "instruction": "Navigate back to Desktop using the back button or address bar",
+      "detailedInstruction": "Click the back button (←) in your file manager, or click on 'Desktop' in the address bar/breadcrumb navigation to go back to the Desktop folder.",
+      "expectedActions": ["navigated_back", "back_to_desktop"],
+      "validation": {
+        "currentPath": ["Desktop"],
+        "backNavigation": true,
+        "timeout": 30
+      },
+      "successMessage": "🎉 Excellent! You've mastered basic file navigation!\nYou can now create folders, rename them, and navigate between them!",
+      "errorMessages": {
+        "timeout": "Look for a back button (←) or click 'Desktop' in the address bar.",
+        "stillInFolder": "Make sure you navigate back to the Desktop folder."
+      },
+      "hints": [
+        "Look for a back arrow button (←) near the top of the window",
+        "Or click on 'Desktop' in the address bar",
+        "You can also click 'Desktop' in the left sidebar",
+        "You should see your LearningWithAsos folder on the Desktop"
+      ]
+    }
+  ],
+  "adaptivity": {
+    "fastLearner": {
+      "threshold": 20,
+      "actions": ["skip_basic_explanations", "combine_steps", "advance_quickly"]
+    },
+    "slowLearner": {
+      "threshold": 90,
+      "actions": ["show_extra_hints", "slower_pace", "more_encouragement"]
+    },
+    "errorProne": {
+      "threshold": 2,
+      "actions": ["detailed_explanations", "step_by_step_guidance", "visual_cues"]
+    }
+  }
+}

@@ -70,11 +70,11 @@ goto fail
 :execute
 @rem Setup the command line
 
-set CLASSPATH=%APP_HOME%\lib\asos_gradle.jar
-
+set CLASSPATH=%APP_HOME%\lib\reactfx-2.0-M5.jar;%APP_HOME%\lib\wellbehavedfx-0.3.3.jar
+set MODULE_PATH=%APP_HOME%\lib\asos_gradle.jar;%APP_HOME%\lib\javafx-fxml-21-win.jar;%APP_HOME%\lib\javafx-web-21-win.jar;%APP_HOME%\lib\javafx-controls-21-win.jar;%APP_HOME%\lib\javafx-media-21-win.jar;%APP_HOME%\lib\richtextfx-0.11.2.jar;%APP_HOME%\lib\oshi-core-6.4.6.jar;%APP_HOME%\lib\jna-platform-5.13.0.jar;%APP_HOME%\lib\jna-5.13.0.jar;%APP_HOME%\lib\jackson-annotations-2.15.2.jar;%APP_HOME%\lib\jackson-dataformat-yaml-2.15.2.jar;%APP_HOME%\lib\jackson-databind-2.15.2.jar;%APP_HOME%\lib\jackson-core-2.15.2.jar;%APP_HOME%\lib\sqlite-jdbc-3.43.0.0.jar;%APP_HOME%\lib\logback-classic-1.4.11.jar;%APP_HOME%\lib\slf4j-api-2.0.9.jar;%APP_HOME%\lib\javafx-graphics-21-win.jar;%APP_HOME%\lib\undofx-2.1.1.jar;%APP_HOME%\lib\flowless-0.7.2.jar;%APP_HOME%\lib\snakeyaml-2.0.jar;%APP_HOME%\lib\logback-core-1.4.11.jar;%APP_HOME%\lib\javafx-base-21-win.jar
 
 @rem Execute asos_gradle
-"%JAVA_EXE%" %DEFAULT_JVM_OPTS% %JAVA_OPTS% %ASOS_GRADLE_OPTS%  -classpath "%CLASSPATH%" com.asos.Main %*
+"%JAVA_EXE%" %DEFAULT_JVM_OPTS% %JAVA_OPTS% %ASOS_GRADLE_OPTS%  -classpath "%CLASSPATH%" --module-path "%MODULE_PATH%" --module com.asos/com.asos.Main %*
 
 :end
 @rem End local scope for the variables with windows NT shell

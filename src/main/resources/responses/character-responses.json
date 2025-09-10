@@ -1,0 +1,86 @@
+{
+  "greetings": [
+    "আছস? (Are you there?) 👋\nI'm here to help you learn!",
+    "Hello there! 😊\nReady for some fun learning?",
+    "আছস? Let's make learning easy and enjoyable!",
+    "Hi! I'm your friendly learning companion! 🤗"
+  ],
+  "encouragement": [
+    "You're doing great! Keep going! 💪",
+    "Excellent work! I'm proud of you! 🌟",
+    "Perfect! You're getting the hang of this! 👏",
+    "Amazing! You're a natural learner! ✨",
+    "Wonderful! Keep up the fantastic work! 🎉"
+  ],
+  "waiting": [
+    "Take your time! I'm here when you're ready. 😌",
+    "No rush! Learning at your own pace is best. ⏰",
+    "I'll wait patiently while you work on this step. 🕰️",
+    "আছস? I'm right here whenever you need me! 👋"
+  ],
+  "errors": [
+    "Oops! That's not quite right. Let me help you fix it. 🤔",
+    "No worries! Mistakes help us learn. Let's try again! 💪",
+    "Almost there! Let me guide you through this step. 🎯",
+    "Don't worry about mistakes - they're part of learning! 😊"
+  ],
+  "success": [
+    "🎉 Fantastic! You nailed it!",
+    "✅ Perfect! You completed that step beautifully!",
+    "🌟 Excellent work! You're really getting this!",
+    "👏 Amazing! You're becoming quite skilled!",
+    "🎊 Wonderful! That was done perfectly!"
+  ],
+  "completion": [
+    "🎉 Congratulations! You've completed the entire pathway!",
+    "🏆 Amazing! You're now skilled in this area!",
+    "✨ Fantastic work! You should be proud of yourself!",
+    "🎊 Perfect! You've mastered these skills!"
+  ],
+  "adaptivity": {
+    "fastLearner": [
+      "Wow! You're learning quickly! 🚀",
+      "You're a fast learner! Let's keep the momentum going! ⚡",
+      "Impressive speed! Ready for the next challenge? 🏃‍♀️"
+    ],
+    "slowLearner": [
+      "Perfect! Taking time to understand is smart! 🧠",
+      "Great approach! Slow and steady wins the race! 🐢",
+      "Excellent! Thorough learning is the best learning! 📚"
+    ],
+    "struggling": [
+      "আছস? Don't worry, I'm here to help you through this! 🤝",
+      "It's okay to find this challenging - that means you're learning! 💪",
+      "Let's break this down into smaller pieces. You can do this! 🧩"
+    ]
+  },
+  "hints": {
+    "general": [
+      "💡 Tip: Take your time and read the instructions carefully.",
+      "💡 Remember: It's okay to make mistakes - that's how we learn!",
+      "💡 Hint: If you're stuck, try reading the instruction again slowly."
+    ],
+    "technical": [
+      "💡 Tech tip: Make sure you're following the exact steps.",
+      "💡 Remember: Spelling and punctuation matter in programming!",
+      "💡 Hint: Check that you're in the right folder or application."
+    ]
+  },
+  "personality": {
+    "friendly": [
+      "আছস? That's the spirit! 😊",
+      "You're doing wonderfully! 🌈",
+      "I love seeing you learn and grow! 💚"
+    ],
+    "patient": [
+      "There's no hurry - learn at your own pace! ⏳",
+      "I'll be right here supporting you every step of the way! 🤗",
+      "Take all the time you need - good learning takes time! 🌱"
+    ],
+    "encouraging": [
+      "You've got this! I believe in you! 💪",
+      "Every expert was once a beginner! 🌟",
+      "You're braver than you believe and stronger than you seem! 🦋"
+    ]
+  }
+}
