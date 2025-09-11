@@ -1,9 +1,20 @@
 
+buildscript {
+    repositories { 
+        mavenCentral()
+        gradlePluginPortal()
+    }
+    dependencies { 
+        classpath 'de.undercouch:gradle-download-task:5.4.0'
+    }
+}
+
 plugins {
     id 'application'
     id 'java'
     id 'org.openjfx.javafxplugin' version '0.1.0'
     id 'org.beryx.jlink' version '3.0.1'
+    id 'de.undercouch.download' version '5.4.0'
 }
 
 java {
@@ -49,6 +60,18 @@ dependencies {
     // SQLite database
     implementation 'org.xerial:sqlite-jdbc:3.43.0.0'
     
+    // AI Dependencies - ONNX Runtime for offline AI inference
+    implementation 'com.microsoft.onnxruntime:onnxruntime:1.16.3'
+    
+    // Enhanced text processing for AI
+    implementation 'org.apache.commons:commons-text:1.10.0'
+    
+    // Memory-efficient collections for AI operations
+    implementation 'org.eclipse.collections:eclipse-collections:11.1.0'
+    
+    // HTTP client for model downloads (one-time setup)
+    implementation 'org.apache.httpcomponents.client5:httpclient5:5.2.1'
+    
     // For now, we'll implement basic terminal functionality without external library
     
     // Logging
@@ -76,5 +99,54 @@ tasks.register('packageApp') {
     dependsOn 'jlink'
     doLast {
         println "Application packaged successfully!"
+    }
+}
+
+// Create models directory if it doesn't exist
+tasks.register('createModelsDirectory') {
+    doLast {
+        file('models').mkdirs()
+    }
+}
+
+// Download Gemma 270M ONNX model
+tasks.register('downloadGemmaModel', Download) {
+    dependsOn 'createModelsDirectory'
+    
+    // Using a placeholder URL - replace with actual Gemma 270M ONNX model URL
+    // For demo purposes, we'll download a small file to show the mechanism works
+    src 'https://huggingface.co/microsoft/DialoGPT-medium/resolve/main/config.json'
+    dest file('models/gemma-270m-placeholder.json')
+    overwrite false
+    onlyIfModified true
+    
+    doFirst {
+        println "Downloading Gemma 270M model..."
+        println "Note: Replace URL with actual Gemma 270M ONNX model when available"
+    }
+    
+    doLast {
+        println "Model download completed to: ${dest}"
+    }
+}
+
+// Make build depend on model download
+build.dependsOn 'downloadGemmaModel'
+
+// Alternative task for downloading actual ONNX model when URL is available
+tasks.register('downloadActualGemmaModel', Download) {
+    dependsOn 'createModelsDirectory'
+    
+    // TODO: Replace with actual Gemma 270M ONNX model URL when available
+    // src 'https://actual-url-to-gemma-270m.onnx'
+    // dest file('models/gemma-270m.onnx')
+    
+    // For now, create a placeholder file
+    doLast {
+        def modelFile = file('models/gemma-270m.onnx')
+        if (!modelFile.exists()) {
+            modelFile.text = "# Placeholder for Gemma 270M ONNX model\n# Replace this file with actual model when available"
+            println "Created placeholder model file: ${modelFile}"
+        }
     }
 }
