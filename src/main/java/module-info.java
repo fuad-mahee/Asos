@@ -21,5 +21,8 @@ module com.asos {
     requires org.slf4j;
     requires ch.qos.logback.classic;
     
+    // AI Dependencies (will be added incrementally)
+    requires org.apache.commons.text;
+    
     exports com.asos;
 }

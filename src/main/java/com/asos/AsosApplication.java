@@ -31,6 +31,12 @@ public class AsosApplication {
     private PersonalizationEngine personalizationEngine;
     private SessionManager sessionManager;
     
+    // AI components
+    private ModelManager modelManager;
+    private LocalAIEngine aiEngine;
+    private IntelligentLearningAssistant aiAssistant;
+    private ConversationalInterface conversationalInterface;
+    
     public void start(Stage stage) {
         this.primaryStage = stage;
         
@@ -53,6 +59,15 @@ public class AsosApplication {
         analytics = new LearningAnalytics(profileManager);
         personalizationEngine = new PersonalizationEngine(profileManager, analytics);
         sessionManager = new SessionManager(profileManager, analytics);
+        
+        // Initialize AI components
+        modelManager = new ModelManager();
+        aiEngine = new LocalAIEngine(); // Auto-initializes with downloaded model if available
+        aiAssistant = new IntelligentLearningAssistant(aiEngine, profileManager, analytics);
+        conversationalInterface = new ConversationalInterface(aiAssistant);
+        
+        // Log AI initialization status
+        logAIInitializationStatus();
         
         // Initialize the Asos character with analytics
         asosCharacter = new AsosCharacter();
@@ -175,7 +190,7 @@ public class AsosApplication {
                 return reason;
         }
     }    private void setupUI() {
-        primaryStage.setTitle("Asos? - Your Friendly Learning Companion (Enhanced)");
+        primaryStage.setTitle("Asos? - Your Friendly Learning Companion (Enhanced with AI)");
         primaryStage.initStyle(StageStyle.DECORATED);
         primaryStage.setResizable(true);
         
@@ -186,20 +201,25 @@ public class AsosApplication {
         VBox mainContent = createEnhancedMainContent();
         root.setCenter(mainContent);
         
-        // Add enhanced Asos character to the right side
-        EnhancedAsosCharacter enhancedCharacter = new EnhancedAsosCharacter(profileManager, analytics);
-        root.setRight(enhancedCharacter);
+        // Add AI conversational interface to the right side
+        root.setRight(conversationalInterface.getMainContainer());
         
-        // Add learning dashboard to the left side
-        LearningDashboard dashboard = new LearningDashboard(profileManager, analytics, sessionManager);
-        root.setLeft(dashboard);
+        // Add enhanced Asos character to the left side (moved from right)
+        EnhancedAsosCharacter enhancedCharacter = new EnhancedAsosCharacter(profileManager, analytics);
+        VBox leftSide = new VBox(10);
+        leftSide.getChildren().addAll(enhancedCharacter, createAIControlPanel());
+        root.setLeft(leftSide);
         
         // Add real-time feedback system to the bottom
         RealTimeFeedbackSystem feedbackSystem = new RealTimeFeedbackSystem(
             profileManager, analytics, personalizationEngine);
         root.setBottom(feedbackSystem);
         
-        Scene scene = new Scene(root, 1400, 900);
+        Scene scene = new Scene(root, 1600, 1000); // Increased size for AI interface
+        
+        // Load CSS styles
+        scene.getStylesheets().add(getClass().getResource("/conversation-styles.css").toExternalForm());
+        
         primaryStage.setScene(scene);
         
         // Handle close request
@@ -296,9 +316,102 @@ public class AsosApplication {
         return welcomeBox;
     }
     
+    private void logAIInitializationStatus() {
+        // Log the AI model status for debugging
+        Platform.runLater(() -> {
+            try {
+                boolean aiReady = aiEngine.isReady();
+                System.out.println("=== AI ENGINE STATUS ===");
+                System.out.println("AI Engine Ready: " + aiReady);
+                System.out.println("Model Path: models/gemma-270m.onnx");
+                System.out.println("Auto-download: Enabled (runs after gradle build)");
+                System.out.println("========================");
+            } catch (Exception e) {
+                System.out.println("Error checking AI status: " + e.getMessage());
+            }
+        });
+    }
+    
+    private VBox createAIControlPanel() {
+        VBox aiControlPanel = new VBox(10);
+        aiControlPanel.setPadding(new Insets(15));
+        aiControlPanel.setStyle("-fx-background-color: rgba(230, 243, 255, 0.8); " +
+                              "-fx-background-radius: 10; " +
+                              "-fx-border-color: #007bff; " +
+                              "-fx-border-radius: 10; " +
+                              "-fx-border-width: 1;");
+        
+        Label aiTitle = new Label("🤖 AI Assistant");
+        aiTitle.setStyle("-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #007bff;");
+        
+        Button toggleAIButton = new Button("Show/Hide AI Chat");
+        toggleAIButton.setStyle("-fx-font-size: 12px; -fx-padding: 8 12;");
+        toggleAIButton.setOnAction(e -> {
+            boolean isVisible = conversationalInterface.getMainContainer().isVisible();
+            conversationalInterface.setVisible(!isVisible);
+        });
+        
+        Button focusAIButton = new Button("Focus AI Input");
+        focusAIButton.setStyle("-fx-font-size: 12px; -fx-padding: 8 12;");
+        focusAIButton.setOnAction(e -> conversationalInterface.focusInput());
+        
+        Label statusLabel = new Label("AI Status: Ready");
+        statusLabel.setStyle("-fx-font-size: 11px; -fx-text-fill: #28a745;");
+        
+        // Update status based on AI engine state
+        if (aiEngine != null) {
+            try {
+                boolean isInitialized = aiEngine.isReady();
+                statusLabel.setText("AI Status: " + (isInitialized ? "Ready" : "Initializing..."));
+                statusLabel.setStyle("-fx-font-size: 11px; -fx-text-fill: " + 
+                    (isInitialized ? "#28a745;" : "#ffc107;"));
+            } catch (Exception e) {
+                statusLabel.setText("AI Status: Error");
+                statusLabel.setStyle("-fx-font-size: 11px; -fx-text-fill: #dc3545;");
+            }
+        }
+        
+        aiControlPanel.getChildren().addAll(aiTitle, toggleAIButton, focusAIButton, statusLabel);
+        return aiControlPanel;
+    }
+    
     private void startLearningPathway(String pathwayId) {
         asosCharacter.greetForPathway(pathwayId);
         pathwayManager.startPathway(pathwayId);
+        
+        // Notify AI assistant about the new learning pathway
+        if (conversationalInterface != null) {
+            conversationalInterface.addContextualInformation("current_pathway", pathwayId);
+            conversationalInterface.updateConversationMode(getConversationModeForPathway(pathwayId));
+            
+            // Add contextual suggestion based on pathway
+            String suggestion = getPathwaySuggestion(pathwayId);
+            if (suggestion != null) {
+                conversationalInterface.addContextualSuggestion(suggestion);
+            }
+        }
+    }
+    
+    private String getConversationModeForPathway(String pathwayId) {
+        switch (pathwayId) {
+            case "python-basics":
+                return "Programming Help";
+            case "file-navigation":
+                return "General Learning";
+            default:
+                return "Study Planning";
+        }
+    }
+    
+    private String getPathwaySuggestion(String pathwayId) {
+        switch (pathwayId) {
+            case "python-basics":
+                return "How do I start learning Python programming?";
+            case "file-navigation":
+                return "What are the essential file management skills I should learn?";
+            default:
+                return "What's the best way to approach this learning topic?";
+        }
     }
     
     private void startMonitoringServices() {
@@ -310,6 +423,24 @@ public class AsosApplication {
     private void stopApplication() {
         if (osMonitor != null) {
             osMonitor.stopMonitoring();
+        }
+        
+        // Cleanup AI resources
+        if (aiEngine != null) {
+            try {
+                aiEngine.cleanup();
+            } catch (Exception e) {
+                System.err.println("Error cleaning up AI engine: " + e.getMessage());
+            }
+        }
+        
+        if (modelManager != null) {
+            try {
+                // ModelManager cleanup will be implemented when needed
+                System.out.println("Model manager cleanup completed");
+            } catch (Exception e) {
+                System.err.println("Error cleaning up model manager: " + e.getMessage());
+            }
         }
     }
 }
