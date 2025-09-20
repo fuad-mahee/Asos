@@ -24,8 +24,12 @@ java {
 
 application {
     mainClass = 'com.asos.Main'
+<<<<<<< HEAD
     // Remove module configuration for now to support ONNX Runtime
     // mainModule = 'com.asos'
+=======
+    mainModule = 'com.asos'
+>>>>>>> a7e07ba8d0c94c285eeb32dfa906a3319c356d9d
 }
 
 javafx {
@@ -56,14 +60,22 @@ dependencies {
     // JSON/YAML processing
     implementation 'com.fasterxml.jackson.core:jackson-core:2.15.2'
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.15.2'
+<<<<<<< HEAD
     implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.15.2'
+=======
+>>>>>>> a7e07ba8d0c94c285eeb32dfa906a3319c356d9d
     implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.15.2'
     
     // SQLite database
     implementation 'org.xerial:sqlite-jdbc:3.43.0.0'
     
+<<<<<<< HEAD
     // AI Dependencies - ONNX Runtime for offline AI inference  
     implementation 'com.microsoft.onnxruntime:onnxruntime:1.19.2' // Latest available version
+=======
+    // AI Dependencies - ONNX Runtime for offline AI inference
+    implementation 'com.microsoft.onnxruntime:onnxruntime:1.16.3'
+>>>>>>> a7e07ba8d0c94c285eeb32dfa906a3319c356d9d
     
     // Enhanced text processing for AI
     implementation 'org.apache.commons:commons-text:1.10.0'

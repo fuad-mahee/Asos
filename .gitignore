@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Ignore build distributions
 build/distributions/*.tar
 build/distributions/*.zip
@@ -68,3 +69,26 @@ models/*.onnx_data
 
 # OS specific directories
 .asos/
+=======
+# Gradle build files
+build/
+.gradle/
+
+# IDE files
+.idea/
+.vscode/
+*.iml
+*.ipr
+*.iws
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Temporary files
+*.tmp
+*.temp
+>>>>>>> a7e07ba8d0c94c285eeb32dfa906a3319c356d9d
