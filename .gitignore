@@ -1,0 +1,70 @@
+# Ignore build distributions
+build/distributions/*.tar
+build/distributions/*.zip
+
+# Gradle
+.gradle/
+build/
+!gradle/wrapper/gradle-wrapper.jar
+!**/src/main/**/build/
+!**/src/test/**/build/
+
+# IDE
+.idea/
+*.iws
+*.iml
+*.ipr
+out/
+.vscode/
+
+# Eclipse
+.classpath
+.project
+.settings/
+bin/
+
+# NetBeans
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+
+# macOS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Windows
+*.tmp
+*.temp
+*.log
+
+# Java
+*.class
+*.jar
+*.war
+*.ear
+*.zip
+*.tar.gz
+*.rar
+hs_err_pid*
+
+# JavaFX
+.fxcache/
+
+# Application specific
+user_profile.json
+*.log
+logs/
+
+# Model files (these are large - keeping placeholder but ignoring actual models)
+models/*.onnx
+models/*.onnx_data
+
+# OS specific directories
+.asos/

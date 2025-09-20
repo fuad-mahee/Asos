@@ -1,0 +1,204 @@
+{
+  "id": "python-basics",
+  "name": "Python Basics - Your First Program",
+  "description": "Learn to install Python and write your first 'Hello World' program step by step",
+  "difficulty": "beginner",
+  "estimatedTime": "30 minutes",
+  "prerequisites": [],
+  "tags": ["programming", "python", "beginner"],
+  "character": {
+    "welcomeMessage": "আছস? Ready to learn Python? 🐍\nDon't worry, I'll guide you through every step!\nLet's make coding fun and easy!",
+    "completionMessage": "🎉 Congratulations! You've written your first Python program!\nYou're officially a Python programmer now!\nআছস? wasn't that amazing? 😊"
+  },
+  "steps": [
+    {
+      "stepNumber": 1,
+      "instruction": "First, let's get Python! Open your web browser and go to python.org/downloads",
+      "detailedInstruction": "Click on your web browser icon (Chrome, Firefox, Edge, etc.) and type 'python.org/downloads' in the address bar, then press Enter.",
+      "expectedActions": ["browser_opened", "website_visited"],
+      "validation": {
+        "processNames": ["chrome.exe", "firefox.exe", "msedge.exe", "safari"],
+        "windowTitles": ["python", "download"],
+        "timeout": 60
+      },
+      "successMessage": "Perfect! You opened a browser. Now navigate to python.org/downloads to get Python.",
+      "errorMessages": {
+        "timeout": "Take your time! When you're ready, open any web browser.",
+        "wrongAction": "Hmm, that's not quite right. Try opening a web browser first."
+      },
+      "hints": [
+        "Look for browser icons on your taskbar or desktop",
+        "Common browsers: Chrome (colorful circle), Firefox (orange fox), Edge (blue 'e')",
+        "You can also search for 'browser' in your start menu"
+      ]
+    },
+    {
+      "stepNumber": 2,
+      "instruction": "Download Python for your operating system (Windows/Mac/Linux)",
+      "detailedInstruction": "On the Python downloads page, click the big yellow 'Download Python' button for your system. The website will automatically detect your operating system.",
+      "expectedActions": ["file_downloaded", "python_installer_present"],
+      "validation": {
+        "filePatterns": ["*python*.exe", "*python*.msi", "*python*.dmg", "*python*.pkg"],
+        "downloadFolder": true,
+        "timeout": 180
+      },
+      "successMessage": "Great! Python installer downloaded successfully. Let's install it next!",
+      "errorMessages": {
+        "timeout": "Downloads can take time. Check your Downloads folder or try again.",
+        "wrongFile": "Make sure you download the Python installer, not something else."
+      },
+      "hints": [
+        "Look for a big yellow button that says 'Download Python'",
+        "The download might go to your Downloads folder",
+        "File size is usually 20-30 MB"
+      ]
+    },
+    {
+      "stepNumber": 3,
+      "instruction": "Run the Python installer and follow the setup wizard",
+      "detailedInstruction": "Find the downloaded Python installer file (usually in Downloads folder) and double-click it. IMPORTANT: Check 'Add Python to PATH' before clicking Install!",
+      "expectedActions": ["installer_launched", "python_installed"],
+      "validation": {
+        "processNames": ["python*.exe", "*setup*.exe", "*install*.exe"],
+        "registryKeys": ["HKEY_LOCAL_MACHINE\\SOFTWARE\\Python"],
+        "timeout": 300
+      },
+      "successMessage": "Excellent! Python is installed. Now let's test if it's working properly.",
+      "errorMessages": {
+        "timeout": "Installation can take a few minutes. Let it finish completely.",
+        "pathError": "Remember to check 'Add Python to PATH' during installation!"
+      },
+      "hints": [
+        "Double-click the downloaded file to start installation",
+        "Always check 'Add Python to PATH' checkbox",
+        "Choose 'Install Now' for default settings",
+        "You might need administrator permission"
+      ]
+    },
+    {
+      "stepNumber": 4,
+      "instruction": "Open Command Prompt (Windows) or Terminal (Mac/Linux)",
+      "detailedInstruction": "On Windows: Press Windows key + R, type 'cmd' and press Enter. On Mac: Press Cmd + Space, type 'terminal'. On Linux: Press Ctrl + Alt + T.",
+      "expectedActions": ["terminal_opened", "command_prompt_visible"],
+      "validation": {
+        "processNames": ["cmd.exe", "powershell.exe", "terminal", "Terminal.app"],
+        "windowTitles": ["command prompt", "powershell", "terminal"],
+        "timeout": 60
+      },
+      "successMessage": "Perfect! Command line is open. Now let's check if Python is installed correctly.",
+      "errorMessages": {
+        "timeout": "No rush! Open the command line when you're ready.",
+        "wrongApp": "Make sure you open Command Prompt, PowerShell, or Terminal."
+      },
+      "hints": [
+        "Windows: Search for 'cmd' or 'command prompt' in start menu",
+        "Windows: You can also use PowerShell",
+        "Mac: Search for 'terminal' in Spotlight",
+        "The window should show a prompt where you can type commands"
+      ]
+    },
+    {
+      "stepNumber": 5,
+      "instruction": "Type 'python --version' to verify Python installation",
+      "detailedInstruction": "In the command prompt/terminal, type exactly: python --version (with two dashes) and press Enter. You should see the Python version number.",
+      "expectedActions": ["command_typed", "version_displayed"],
+      "validation": {
+        "commandOutput": ["python 3.", "Python 3."],
+        "commandHistory": ["python --version", "python -V"],
+        "timeout": 30
+      },
+      "successMessage": "Awesome! Python is working perfectly. Time to write your first program!",
+      "errorMessages": {
+        "commandNotFound": "If you get 'command not found', Python might not be in PATH. Try 'python3 --version'",
+        "timeout": "Type the command and press Enter. Don't worry if it takes a moment!"
+      },
+      "hints": [
+        "Type exactly: python --version",
+        "Make sure to use two dashes: --",
+        "Press Enter after typing",
+        "If 'python' doesn't work, try 'python3'"
+      ]
+    },
+    {
+      "stepNumber": 6,
+      "instruction": "Create a new file called 'hello.py' on your Desktop",
+      "detailedInstruction": "Go to your Desktop, right-click in an empty space, select 'New' > 'Text Document' (Windows) or use any text editor. Name the file 'hello.py' - the .py extension is important!",
+      "expectedActions": ["file_created", "hello_py_exists"],
+      "validation": {
+        "fileExists": ["**/Desktop/hello.py", "**/Desktop/hello.py"],
+        "fileExtension": [".py"],
+        "timeout": 90
+      },
+      "successMessage": "Perfect! You created hello.py. Now let's add some Python code to it!",
+      "errorMessages": {
+        "timeout": "Take your time creating the file. Remember to name it 'hello.py'",
+        "wrongExtension": "Make sure the file ends with .py, not .txt!"
+      },
+      "hints": [
+        "Right-click on Desktop > New > Text Document",
+        "Change the name from 'hello.txt' to 'hello.py'",
+        "The .py extension tells the computer it's a Python file",
+        "You can also use Notepad, VS Code, or any text editor"
+      ]
+    },
+    {
+      "stepNumber": 7,
+      "instruction": "Open hello.py and type: print('Hello, World!')",
+      "detailedInstruction": "Double-click hello.py to open it in a text editor. Delete any existing content and type exactly: print('Hello, World!') - pay attention to the quotes and parentheses!",
+      "expectedActions": ["file_opened", "code_written", "file_saved"],
+      "validation": {
+        "fileContent": ["print", "Hello", "World"],
+        "fileSaved": true,
+        "timeout": 120
+      },
+      "successMessage": "Excellent! You wrote your first Python code. Now let's run it and see the magic!",
+      "errorMessages": {
+        "timeout": "Open the file and add the code when you're ready.",
+        "syntaxError": "Make sure you typed: print('Hello, World!') exactly as shown."
+      },
+      "hints": [
+        "Double-click hello.py to open it",
+        "Type exactly: print('Hello, World!')",
+        "Use single quotes: ' not \"",
+        "Don't forget the parentheses: ( )",
+        "Save the file when done (Ctrl+S)"
+      ]
+    },
+    {
+      "stepNumber": 8,
+      "instruction": "In terminal, navigate to Desktop and run: python hello.py",
+      "detailedInstruction": "In your command prompt/terminal, type 'cd Desktop' to go to Desktop folder, then type 'python hello.py' to run your program. You should see 'Hello, World!' printed!",
+      "expectedActions": ["directory_changed", "program_executed", "output_displayed"],
+      "validation": {
+        "commandHistory": ["cd Desktop", "python hello.py"],
+        "commandOutput": ["Hello, World!"],
+        "timeout": 90
+      },
+      "successMessage": "🎉 CONGRATULATIONS! You just ran your first Python program!\nYou're officially a Python programmer now!",
+      "errorMessages": {
+        "fileNotFound": "Make sure you're in the Desktop folder: type 'cd Desktop' first",
+        "pythonError": "If you get an error, check that hello.py contains: print('Hello, World!')"
+      },
+      "hints": [
+        "First type: cd Desktop (to go to Desktop folder)",
+        "Then type: python hello.py (to run your program)",
+        "You should see 'Hello, World!' appear!",
+        "If 'python' doesn't work, try 'python3 hello.py'"
+      ]
+    }
+  ],
+  "adaptivity": {
+    "fastLearner": {
+      "threshold": 30,
+      "actions": ["skip_hints", "combine_steps", "advance_quickly"]
+    },
+    "slowLearner": {
+      "threshold": 120,
+      "actions": ["show_extra_hints", "break_down_steps", "provide_encouragement"]
+    },
+    "errorProne": {
+      "threshold": 3,
+      "actions": ["detailed_explanations", "step_by_step_guidance", "alternative_methods"]
+    }
+  }
+}

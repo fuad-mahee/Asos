@@ -1,0 +1,107 @@
+[
+  {
+    "chunkId": 1,
+    "instruction": "Create Hello.java file",
+    "detailedInstruction": "Let's start your Java journey! Here's what you need to do:\n\n1. Open Visual Studio Code (VSCode)\n2. Navigate to your workspace folder\n3. Right-click in the file explorer\n4. Select 'New File' from the context menu\n5. Name the file 'Hello.java' (make sure it ends with .java)\n6. Press Enter to create the file\n\nWhy Java files end with .java: This extension tells the Java compiler that this is a Java source code file that needs to be compiled into bytecode.",
+    "expectedActions": [
+      {
+        "type": "FILE_CREATED",
+        "target": "Hello.java",
+        "pattern": ".*Hello\\.java$"
+      }
+    ],
+    "hint": "Right-click in your workspace and select 'New File', then name it 'Hello.java'",
+    "errorCorrection": "Make sure the file extension is .java, not .txt",
+    "timeoutSeconds": 120,
+    "difficulty": "BEGINNER"
+  },
+  {
+    "chunkId": 2,
+    "instruction": "Write your first Java code",
+    "detailedInstruction": "Now let's write your first Java program! Copy and paste this code into your Hello.java file:\n\n```java\npublic class Hello {\n    public static void main(String[] args) {\n        System.out.println(\"Hello World\");\n    }\n}\n```\n\nLet me explain each part:\n• 'public class Hello' - Creates a class named Hello (must match filename)\n• 'public static void main' - The entry point where your program starts\n• 'String[] args' - Command line arguments (not used here)\n• 'System.out.println' - Prints text to the console\n• The curly braces {} group code together\n\nTip: Java is case-sensitive, so 'System' must have a capital S!",
+    "expectedActions": [
+      {
+        "type": "CODE_CONTAINS",
+        "target": "Hello.java",
+        "pattern": "public class Hello"
+      },
+      {
+        "type": "CODE_CONTAINS",
+        "target": "Hello.java",
+        "pattern": "System\\.out\\.println"
+      }
+    ],
+    "hint": "Remember to include the class definition and main method",
+    "errorCorrection": "Check for typos: 'System' with capital S, 'println' spelling",
+    "timeoutSeconds": 300,
+    "difficulty": "BEGINNER"
+  },
+  {
+    "chunkId": 3,
+    "instruction": "Compile your Java program",
+    "detailedInstruction": "Great! Now let's compile your Java code into bytecode that the computer can understand:\n\n1. Save your Hello.java file (Ctrl+S or Cmd+S)\n2. Open the terminal in VSCode (View → Terminal)\n3. Navigate to your file's directory if needed\n4. Type this command and press Enter:\n   javac Hello.java\n\nWhat happens during compilation:\n• The Java compiler (javac) reads your .java file\n• It checks for syntax errors\n• If successful, it creates a Hello.class file (bytecode)\n• Bytecode can run on any computer with Java installed\n\nIf you see no output, that means compilation was successful! If you see errors, read them carefully - they'll tell you what to fix.",
+    "expectedActions": [
+      {
+        "type": "FILE_MODIFIED",
+        "target": "Hello.java",
+        "pattern": ".*"
+      },
+      {
+        "type": "TERMINAL_OUTPUT",
+        "target": "javac",
+        "pattern": ".*"
+      },
+      {
+        "type": "COMPILE_SUCCESS",
+        "target": "Hello.java",
+        "pattern": "Hello\\.class"
+      }
+    ],
+    "hint": "Open terminal and type 'javac Hello.java' to compile",
+    "errorCorrection": "If you see compile errors, check your syntax carefully",
+    "timeoutSeconds": 180,
+    "difficulty": "BEGINNER"
+  },
+  {
+    "chunkId": 4,
+    "instruction": "Run your program",
+    "detailedInstruction": "Exciting! Let's run your compiled Java program:\n\n1. In the terminal, type this command:\n   java Hello\n2. Press Enter\n\nImportant notes:\n• Use 'java Hello' NOT 'java Hello.java'\n• When running, you use the class name without the file extension\n• Java will look for the Hello.class file (bytecode) to execute\n\nYou should see 'Hello World' printed in the terminal!\n\nWhat's happening:\n• The Java Virtual Machine (JVM) loads your bytecode\n• It finds the main method (the entry point)\n• It executes your System.out.println statement\n• The text appears in the console",
+    "expectedActions": [
+      {
+        "type": "TERMINAL_OUTPUT",
+        "target": "java",
+        "pattern": "Hello World"
+      },
+      {
+        "type": "RUN_SUCCESS",
+        "target": "Hello",
+        "pattern": "Hello World"
+      }
+    ],
+    "hint": "Type 'java Hello' (without .java extension) to run the program",
+    "errorCorrection": "Make sure you compiled successfully first and use 'java Hello' not 'java Hello.java'",
+    "timeoutSeconds": 120,
+    "difficulty": "BEGINNER"
+  },
+  {
+    "chunkId": 5,
+    "instruction": "Personalize your program",
+    "detailedInstruction": "Let's make this program your own! Time to customize the output:\n\n1. Open your Hello.java file\n2. Find this line:\n   System.out.println(\"Hello World\");\n3. Change it to:\n   System.out.println(\"Hello [Your Name]\");\n   (Replace [Your Name] with your actual name)\n4. Save the file\n5. Recompile: javac Hello.java\n6. Run again: java Hello\n\nExample: If your name is Alex, change it to:\nSystem.out.println(\"Hello Alex\");\n\nThis teaches you:\n• How to modify existing code\n• The development cycle: edit → compile → run\n• How changing source code affects program output\n\nTry different messages and see what happens!",
+    "expectedActions": [
+      {
+        "type": "FILE_MODIFIED",
+        "target": "Hello.java",
+        "pattern": ".*"
+      },
+      {
+        "type": "CODE_CONTAINS",
+        "target": "Hello.java",
+        "pattern": "Hello (?!World).*"
+      }
+    ],
+    "hint": "Change the text inside the quotes in System.out.println()",
+    "errorCorrection": "Keep the same structure, just change 'Hello World' to 'Hello YourName'",
+    "timeoutSeconds": 180,
+    "difficulty": "BEGINNER"
+  }
+]
