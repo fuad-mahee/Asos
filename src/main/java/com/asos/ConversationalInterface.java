@@ -95,7 +95,7 @@ public class ConversationalInterface {
         header.getStyleClass().add("conversation-header");
         
         Label titleLabel = new Label("AI Learning Assistant");
-        titleLabel.setFont(Font.font("Arial", FontWeight.BOLD, 16));
+        titleLabel.setFont(Font.font("Helvetica", FontWeight.NORMAL, 16));
         titleLabel.getStyleClass().add("conversation-title");
         
         Label modeLabel = new Label("Mode:");
@@ -123,7 +123,7 @@ public class ConversationalInterface {
         suggestions.getStyleClass().add("suggestions-box");
         
         Label suggestionsLabel = new Label("Quick Start:");
-        suggestionsLabel.setFont(Font.font("Arial", FontWeight.BOLD, 12));
+        suggestionsLabel.setFont(Font.font("Helvetica", FontWeight.NORMAL, 12));
         suggestionsLabel.getStyleClass().add("suggestions-label");
         
         FlowPane suggestionsFlow = new FlowPane(5, 5);

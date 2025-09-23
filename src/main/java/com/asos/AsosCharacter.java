@@ -89,7 +89,7 @@ public class AsosCharacter {
         speechBubble.setTextAlignment(TextAlignment.CENTER);
         speechBubble.setAlignment(Pos.CENTER);
         speechBubble.setMaxWidth(280);
-        speechBubble.setFont(Font.font("Arial", 14));
+        speechBubble.setFont(Font.font("Helvetica", 14));
         speechBubble.setStyle(
             "-fx-background-color: white; " +
             "-fx-border-color: #ccc; " +
@@ -148,7 +148,7 @@ public class AsosCharacter {
     
     public void showError(String errorMessage) {
         String errorResponse = knowledgeBase.getRandomResponse("errors");
-        updateSpeechBubble("⚠️ " + errorResponse + "\n" + errorMessage);
+        updateSpeechBubble("Warning: " + errorResponse + "\n" + errorMessage);
         // Change face color to indicate error
         face.setFill(Color.LIGHTCORAL);
         animateCharacter();
@@ -266,7 +266,7 @@ public class AsosCharacter {
         if (recommendations.isEmpty()) return;
         
         face.setFill(Color.LIGHTSTEELBLUE);
-        String message = "💡 Recommendation: " + recommendations.get(0);
+        String message = "Recommendation: " + recommendations.get(0);
         updateSpeechBubble(message);
         animateCharacter();
     }

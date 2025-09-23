@@ -169,6 +169,12 @@ public class PathwayConfig {
         @JsonProperty("fileExtension")
         private List<String> fileExtension;
         
+        @JsonProperty("fileSaved")
+        private Boolean fileSaved;
+        
+        @JsonProperty("currentPath")
+        private List<String> currentPath;
+        
         // Getters and setters
         public List<String> getProcessNames() { return processNames; }
         public void setProcessNames(List<String> processNames) { this.processNames = processNames; }
@@ -202,6 +208,12 @@ public class PathwayConfig {
         
         public List<String> getFileExtension() { return fileExtension; }
         public void setFileExtension(List<String> fileExtension) { this.fileExtension = fileExtension; }
+        
+        public Boolean getFileSaved() { return fileSaved; }
+        public void setFileSaved(Boolean fileSaved) { this.fileSaved = fileSaved; }
+        
+        public List<String> getCurrentPath() { return currentPath; }
+        public void setCurrentPath(List<String> currentPath) { this.currentPath = currentPath; }
     }
     
     public static class AdaptivityConfig {

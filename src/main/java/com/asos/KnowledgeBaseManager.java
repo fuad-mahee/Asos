@@ -84,11 +84,11 @@ public class KnowledgeBaseManager {
         
         characterResponses.put("encouragement", java.util.List.of(
             "You're doing great! Keep going! 💪",
-            "Excellent work! I'm proud of you! 🌟"
+            "Excellent work! I'm proud of you!"
         ));
         
         characterResponses.put("success", java.util.List.of(
-            "🎉 Fantastic! You nailed it!",
+            "Fantastic! You nailed it!",
             "✅ Perfect! You completed that step beautifully!"
         ));
         
@@ -103,8 +103,8 @@ public class KnowledgeBaseManager {
         ));
         
         characterResponses.put("completion", java.util.List.of(
-            "🎉 Congratulations! You've completed the entire pathway!",
-            "🏆 Amazing! You're now skilled in this area!"
+            "Congratulations! You've completed the entire pathway!",
+            "Amazing! You're now skilled in this area!"
         ));
         
         System.out.println("Initialized fallback character responses");

@@ -1,0 +1,140 @@
+[
+  {
+    "chunkId": 1,
+    "instruction": "Create hello.cpp file",
+    "detailedInstruction": "Welcome to C++ programming! C++ is a powerful, fast language used for games, systems, and more:\n\n1. Open Visual Studio Code (VSCode)\n2. Navigate to your workspace folder\n3. Right-click in the file explorer\n4. Select 'New File' from the context menu\n5. Name the file 'hello.cpp' (note the .cpp extension)\n6. Press Enter to create the file\n\nWhy .cpp extension: C++ files use .cpp (or .cc, .cxx). The 'pp' stands for 'plus plus'. C++ needs to be compiled before running, similar to Java but different from Python.",
+    "expectedActions": [
+      {
+        "type": "FILE_CREATED",
+        "target": "hello.cpp",
+        "pattern": ".*hello\\.cpp$"
+      }
+    ],
+    "hint": "Right-click in workspace, select 'New File', name it 'hello.cpp'",
+    "errorCorrection": "Make sure the extension is .cpp, not .c or .txt",
+    "timeoutSeconds": 120,
+    "difficulty": "BEGINNER"
+  },
+  {
+    "chunkId": 2,
+    "instruction": "Write your first C++ program",
+    "detailedInstruction": "Here's your first C++ program:\n\n```cpp\n#include <iostream>\nusing namespace std;\n\nint main() {\n    cout << \"Hello, World!\" << endl;\n    return 0;\n}\n```\n\nLet me explain each part:\n• '#include <iostream>' - Includes input/output stream library\n• 'using namespace std;' - Lets us use cout without std:: prefix\n• 'int main()' - Main function where program starts (returns integer)\n• 'cout <<' - Outputs text to console (like System.out.println in Java)\n• 'endl' - Ends the line (like \\n)\n• 'return 0;' - Tells system program ended successfully\n• Semicolons end each statement in C++",
+    "expectedActions": [
+      {
+        "type": "CODE_CONTAINS",
+        "target": "hello.cpp",
+        "pattern": "#include.*iostream"
+      },
+      {
+        "type": "CODE_CONTAINS",
+        "target": "hello.cpp",
+        "pattern": "cout.*Hello"
+      }
+    ],
+    "hint": "Copy the code exactly - C++ is very picky about syntax",
+    "errorCorrection": "Check for semicolons, correct spelling of 'iostream'",
+    "timeoutSeconds": 240,
+    "difficulty": "BEGINNER"
+  },
+  {
+    "chunkId": 3,
+    "instruction": "Compile your C++ program",
+    "detailedInstruction": "C++ must be compiled before running. Let's compile it:\n\n1. Save your hello.cpp file (Ctrl+S or Cmd+S)\n2. Open terminal in VSCode (View → Terminal)\n3. Compile with this command:\n   g++ hello.cpp -o hello\n   \n   OR if g++ isn't installed:\n   clang++ hello.cpp -o hello\n\nWhat this does:\n• 'g++' or 'clang++' - C++ compiler\n• 'hello.cpp' - Your source file\n• '-o hello' - Output executable named 'hello'\n\nIf successful, you'll see no errors and a new executable file will be created. If you see errors, read them carefully - they'll guide you to fix syntax issues.",
+    "expectedActions": [
+      {
+        "type": "TERMINAL_OUTPUT",
+        "target": "g++",
+        "pattern": ".*"
+      },
+      {
+        "type": "COMPILE_SUCCESS",
+        "target": "hello.cpp",
+        "pattern": "hello"
+      }
+    ],
+    "hint": "Use 'g++ hello.cpp -o hello' to compile",
+    "errorCorrection": "If g++ not found, try clang++ or install g++",
+    "timeoutSeconds": 180,
+    "difficulty": "BEGINNER"
+  },
+  {
+    "chunkId": 4,
+    "instruction": "Run your C++ program",
+    "detailedInstruction": "Now let's run your compiled C++ program:\n\n1. In terminal, type:\n   ./hello     (on Mac/Linux)\n   OR\n   hello.exe   (on Windows)\n\n2. Press Enter\n\nWhat happens:\n• The executable file contains machine code\n• Your operating system runs it directly\n• Much faster than interpreted languages\n• You should see 'Hello, World!' printed\n\nNote the './' prefix on Mac/Linux - this tells the system to run the file in the current directory.",
+    "expectedActions": [
+      {
+        "type": "TERMINAL_OUTPUT",
+        "target": "./hello",
+        "pattern": "Hello.*World"
+      }
+    ],
+    "hint": "Type './hello' on Mac/Linux or 'hello.exe' on Windows",
+    "errorCorrection": "Make sure you compiled successfully first",
+    "timeoutSeconds": 120,
+    "difficulty": "BEGINNER"
+  },
+  {
+    "chunkId": 5,
+    "instruction": "Learn C++ variables and types",
+    "detailedInstruction": "C++ requires explicit type declarations:\n\n```cpp\n#include <iostream>\n#include <string>\nusing namespace std;\n\nint main() {\n    // Different variable types\n    int age = 25;                    // Integer\n    double price = 19.99;            // Double precision decimal\n    char grade = 'A';                // Single character\n    string name = \"Alex\";            // String (needs #include <string>)\n    bool isStudent = true;           // Boolean (true/false)\n    \n    // Output variables\n    cout << \"Name: \" << name << endl;\n    cout << \"Age: \" << age << endl;\n    cout << \"Price: $\" << price << endl;\n    cout << \"Grade: \" << grade << endl;\n    cout << \"Student: \" << isStudent << endl;  // 1 for true, 0 for false\n    \n    return 0;\n}\n```\n\nCreate variables.cpp and try this!",
+    "expectedActions": [
+      {
+        "type": "FILE_CREATED",
+        "target": "variables.cpp",
+        "pattern": ".*variables\\.cpp$"
+      }
+    ],
+    "hint": "Create variables.cpp file and include <string> for string type",
+    "errorCorrection": "Don't forget semicolons and proper type declarations",
+    "timeoutSeconds": 300,
+    "difficulty": "BEGINNER"
+  },
+  {
+    "chunkId": 6,
+    "instruction": "Practice user input in C++",
+    "detailedInstruction": "Getting user input uses 'cin' (console input):\n\n```cpp\n#include <iostream>\n#include <string>\nusing namespace std;\n\nint main() {\n    string name;\n    int age;\n    \n    cout << \"What's your name? \";\n    getline(cin, name);  // getline for strings with spaces\n    \n    cout << \"How old are you? \";\n    cin >> age;          // cin >> for numbers\n    \n    cout << \"Hello \" << name << \"!\" << endl;\n    cout << \"You are \" << age << \" years old.\" << endl;\n    \n    return 0;\n}\n```\n\nKey differences:\n• 'cin >>' for simple input (stops at spaces)\n• 'getline(cin, variable)' for full lines with spaces\n• Must declare variable types first\n\nCreate user_input.cpp and test it!",
+    "expectedActions": [
+      {
+        "type": "FILE_CREATED",
+        "target": "user_input.cpp",
+        "pattern": ".*user_input\\.cpp$"
+      }
+    ],
+    "hint": "Use getline() for strings, cin >> for numbers",
+    "errorCorrection": "Declare variables with their types before using",
+    "timeoutSeconds": 300,
+    "difficulty": "INTERMEDIATE"
+  },
+  {
+    "chunkId": 7,
+    "instruction": "Master C++ conditionals",
+    "detailedInstruction": "C++ if statements are similar to Java:\n\n```cpp\n#include <iostream>\nusing namespace std;\n\nint main() {\n    int age;\n    cout << \"Enter your age: \";\n    cin >> age;\n    \n    if (age >= 18) {\n        cout << \"You are an adult!\" << endl;\n        cout << \"You can vote!\" << endl;\n    }\n    else if (age >= 13) {\n        cout << \"You are a teenager!\" << endl;\n    }\n    else {\n        cout << \"You are a child!\" << endl;\n    }\n    \n    // Multiple conditions\n    if (age >= 16 && age < 18) {\n        cout << \"You can drive but can't vote yet.\" << endl;\n    }\n    \n    return 0;\n}\n```\n\nCreate conditions.cpp and test it!",
+    "expectedActions": [
+      {
+        "type": "FILE_CREATED",
+        "target": "conditions.cpp",
+        "pattern": ".*conditions\\.cpp$"
+      }
+    ],
+    "hint": "Use && for AND, || for OR in conditions",
+    "errorCorrection": "Remember curly braces {} for code blocks",
+    "timeoutSeconds": 300,
+    "difficulty": "INTERMEDIATE"
+  },
+  {
+    "chunkId": 8,
+    "instruction": "Learn C++ loops",
+    "detailedInstruction": "C++ has powerful loop constructs:\n\n```cpp\n#include <iostream>\nusing namespace std;\n\nint main() {\n    // For loop - similar to Java\n    cout << \"Counting to 5:\" << endl;\n    for (int i = 1; i <= 5; i++) {\n        cout << \"Count: \" << i << endl;\n    }\n    \n    // While loop\n    cout << \"\\nCountdown:\" << endl;\n    int countdown = 5;\n    while (countdown > 0) {\n        cout << countdown << endl;\n        countdown--;\n    }\n    cout << \"Blast off!\" << endl;\n    \n    // Range-based for loop (C++11 and later)\n    int numbers[] = {1, 2, 3, 4, 5};\n    cout << \"\\nNumbers: \";\n    for (int num : numbers) {\n        cout << num << \" \";\n    }\n    cout << endl;\n    \n    return 0;\n}\n```\n\nCreate loops.cpp and explore C++ loops!",
+    "expectedActions": [
+      {
+        "type": "FILE_CREATED",
+        "target": "loops.cpp",
+        "pattern": ".*loops\\.cpp$"
+      }
+    ],
+    "hint": "For loops: for(initialization; condition; increment)",
+    "errorCorrection": "Check semicolons in for loop syntax",
+    "timeoutSeconds": 360,
+    "difficulty": "INTERMEDIATE"
+  }
+]

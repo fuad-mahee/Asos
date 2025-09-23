@@ -15,8 +15,10 @@ import javafx.util.Duration;
 
 import java.util.List;
 
-/**
- * Interactive dashboard that displays learning progress, analytics,
+/**            case VISUAL: return "Visual Learner";
+            case AUDITORY: return "Auditory Learner";
+            case KINESTHETIC: return "Kinesthetic Learner";
+            case BALANCED: return "Balanced Approach";Interactive dashboard that displays learning progress, analytics,
  * and personalized insights in a visually engaging interface
  */
 public class LearningDashboard extends VBox {
@@ -169,10 +171,10 @@ public class LearningDashboard extends VBox {
         VBox rightPanel = new VBox(15);
         rightPanel.setPrefWidth(300);
         
-        Label achievementsTitle = new Label("🏆 Recent Achievements");
+        Label achievementsTitle = new Label("Recent Achievements");
         achievementsTitle.setFont(Font.font("Segoe UI", FontWeight.BOLD, 16));
         
-        Label recommendationsTitle = new Label("💡 Personalized Recommendations");
+        Label recommendationsTitle = new Label("Personalized Recommendations");
         recommendationsTitle.setFont(Font.font("Segoe UI", FontWeight.BOLD, 16));
         
         rightPanel.getChildren().addAll(
@@ -317,21 +319,21 @@ public class LearningDashboard extends VBox {
         HBox item = new HBox(10);
         item.setAlignment(Pos.CENTER_LEFT);
         item.setPadding(new Insets(5));
-        item.setStyle("-fx-background-color: white; -fx-background-radius: 5; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 2, 0, 0, 1);");
+        item.setStyle("-fx-background-color: #353935; -fx-background-radius: 0; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 2, 0, 0, 1);");
         
-        Label icon = new Label("🏆");
-        icon.setFont(Font.font(16));
+        // Removed icon for clean UI
         
         VBox textContent = new VBox(2);
         Label title = new Label(achievement.getTitle());
-        title.setFont(Font.font("Segoe UI", FontWeight.BOLD, 12));
+        title.setFont(Font.font("Helvetica", FontWeight.BOLD, 12));
+        title.setStyle("-fx-text-fill: white;");
         
         Label description = new Label(achievement.getDescription());
-        description.setFont(Font.font("Segoe UI", FontWeight.NORMAL, 10));
-        description.setStyle("-fx-text-fill: #666;");
+        description.setFont(Font.font("Helvetica", FontWeight.NORMAL, 10));
+        description.setStyle("-fx-text-fill: white;");
         
         textContent.getChildren().addAll(title, description);
-        item.getChildren().addAll(icon, textContent);
+        item.getChildren().addAll(textContent);
         
         // Add entrance animation
         item.setTranslateX(100);
@@ -430,7 +432,7 @@ public class LearningDashboard extends VBox {
             case BEGINNER: return "🌱 Beginner";
             case INTERMEDIATE: return "🌿 Intermediate";
             case ADVANCED: return "🌳 Advanced";
-            case EXPERT: return "🏆 Expert";
+            case EXPERT: return "Expert";
             default: return "Learning";
         }
     }
@@ -455,7 +457,7 @@ public class LearningDashboard extends VBox {
             this.setPadding(new Insets(15));
             this.setStyle("-fx-background-color: #e8f5e8; -fx-background-radius: 10; -fx-border-color: #4CAF50; -fx-border-radius: 10;");
             
-            Label title = new Label("🎯 Current Session Progress");
+            Label title = new Label("Current Session Progress");
             title.setFont(Font.font("Segoe UI", FontWeight.BOLD, 16));
             title.setTextFill(Color.DARKGREEN);
             

@@ -126,7 +126,7 @@
       "expectedActions": ["file_created", "hello_py_exists"],
       "validation": {
         "fileExists": ["**/Desktop/hello.py", "**/Desktop/hello.py"],
-        "fileExtension": ".py",
+        "fileExtension": [".py"],
         "timeout": 90
       },
       "successMessage": "Perfect! You created hello.py. Now let's add some Python code to it!",

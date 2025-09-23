@@ -1,0 +1,114 @@
+[
+  {
+    "chunkId": 1,
+    "instruction": "Create hello.py file",
+    "detailedInstruction": "Welcome to Python programming! Python is beginner-friendly and powerful:\n\n1. Open Visual Studio Code (VSCode)\n2. Navigate to your workspace folder\n3. Right-click in the file explorer\n4. Select 'New File' from the context menu\n5. Name the file 'hello.py' (note the .py extension)\n6. Press Enter to create the file\n\nWhy .py extension: This tells your computer and editor that this file contains Python code. Python files don't need compilation like Java - they run directly!",
+    "expectedActions": [
+      {
+        "type": "FILE_CREATED",
+        "target": "hello.py",
+        "pattern": ".*hello\\.py$"
+      }
+    ],
+    "hint": "Right-click in workspace, select 'New File', name it 'hello.py'",
+    "errorCorrection": "Make sure the extension is .py, not .txt",
+    "timeoutSeconds": 120,
+    "difficulty": "BEGINNER"
+  },
+  {
+    "chunkId": 2,
+    "instruction": "Write your first Python program",
+    "detailedInstruction": "Python is known for its simplicity. Your first program is just one line:\n\n```python\nprint(\"Hello, World!\")\n```\n\nThat's it! Unlike Java, Python doesn't need:\n• Class definitions for simple programs\n• A main method\n• Semicolons at the end of lines\n• Curly braces for simple statements\n\nType this line in your hello.py file. Notice how clean and readable Python is!",
+    "expectedActions": [
+      {
+        "type": "CODE_CONTAINS",
+        "target": "hello.py",
+        "pattern": "print\\(.*Hello.*\\)"
+      }
+    ],
+    "hint": "Just type: print(\"Hello, World!\")",
+    "errorCorrection": "Make sure you have parentheses around the text in quotes",
+    "timeoutSeconds": 180,
+    "difficulty": "BEGINNER"
+  },
+  {
+    "chunkId": 3,
+    "instruction": "Run your Python program",
+    "detailedInstruction": "Running Python is simple - no compilation needed:\n\n1. Save your hello.py file (Ctrl+S or Cmd+S)\n2. Open the terminal in VSCode (View → Terminal)\n3. Type this command and press Enter:\n   python hello.py\n   \n   OR (if python doesn't work):\n   python3 hello.py\n\nWhat happens:\n• Python interpreter reads your .py file directly\n• It executes each line of code immediately\n• No intermediate compilation step needed\n• You should see 'Hello, World!' printed\n\nThis is called 'interpreted' vs 'compiled' language!",
+    "expectedActions": [
+      {
+        "type": "TERMINAL_OUTPUT",
+        "target": "python",
+        "pattern": "Hello.*World"
+      }
+    ],
+    "hint": "In terminal, type 'python hello.py' or 'python3 hello.py'",
+    "errorCorrection": "Try both 'python' and 'python3' commands",
+    "timeoutSeconds": 180,
+    "difficulty": "BEGINNER"
+  },
+  {
+    "chunkId": 4,
+    "instruction": "Learn Python variables",
+    "detailedInstruction": "Python variables are very flexible - no type declarations needed:\n\n```python\n# Create variables.py\n# Comments start with # in Python\n\n# Variables - Python figures out the type automatically\nname = \"Alex\"          # String (text)\nage = 25               # Integer (whole number)\nheight = 5.9           # Float (decimal number)\nis_student = True      # Boolean (True/False)\n\n# Print variables\nprint(\"Name:\", name)\nprint(\"Age:\", age)\nprint(\"Height:\", height, \"feet\")\nprint(\"Student:\", is_student)\n\n# Python can change variable types!\nage = \"twenty-five\"    # Now age is a string!\nprint(\"Age as text:\", age)\n```\n\nCreate variables.py and try this!",
+    "expectedActions": [
+      {
+        "type": "FILE_CREATED",
+        "target": "variables.py",
+        "pattern": ".*variables\\.py$"
+      }
+    ],
+    "hint": "Create variables.py file and copy the code",
+    "errorCorrection": "Python is case-sensitive: True, False with capital letters",
+    "timeoutSeconds": 240,
+    "difficulty": "BEGINNER"
+  },
+  {
+    "chunkId": 5,
+    "instruction": "Practice user input",
+    "detailedInstruction": "Getting user input in Python is simple with input():\n\n```python\n# Create user_input.py\n\n# Get user input (always returns a string)\nname = input(\"What's your name? \")\nprint(\"Hello\", name + \"!\")\n\n# For numbers, convert the input\nage_text = input(\"How old are you? \")\nage = int(age_text)  # Convert string to integer\n\nprint(f\"You are {age} years old.\")  # f-string formatting\nprint(f\"Next year you'll be {age + 1}!\")\n\n# One-liner for numbers\nheight = float(input(\"Your height in feet: \"))\nprint(f\"You are {height} feet tall.\")\n```\n\nCreate user_input.py and make it interactive!",
+    "expectedActions": [
+      {
+        "type": "FILE_CREATED",
+        "target": "user_input.py",
+        "pattern": ".*user_input\\.py$"
+      }
+    ],
+    "hint": "Use input() for text, int() to convert to numbers",
+    "errorCorrection": "Remember to convert input() to int() or float() for numbers",
+    "timeoutSeconds": 300,
+    "difficulty": "BEGINNER"
+  },
+  {
+    "chunkId": 6,
+    "instruction": "Master Python conditionals",
+    "detailedInstruction": "Python uses indentation instead of braces for code blocks:\n\n```python\n# Create conditions.py\n\nage = int(input(\"Enter your age: \"))\n\n# Note: Python uses indentation (4 spaces) instead of {}\nif age >= 18:\n    print(\"You are an adult!\")\n    print(\"You can vote!\")\nelif age >= 13:  # 'elif' instead of 'else if'\n    print(\"You are a teenager!\")\n    print(\"Enjoy your youth!\")\nelse:\n    print(\"You are a child!\")\n    print(\"Keep learning and growing!\")\n\n# Multiple conditions\nif age >= 16 and age < 18:\n    print(\"You can drive but can't vote yet.\")\n\nif age == 21:\n    print(\"Special birthday!\")\n```\n\nCreate conditions.py and test different ages!",
+    "expectedActions": [
+      {
+        "type": "FILE_CREATED",
+        "target": "conditions.py",
+        "pattern": ".*conditions\\.py$"
+      }
+    ],
+    "hint": "Remember: indentation matters in Python! Use 4 spaces.",
+    "errorCorrection": "Check indentation - all code in if/else blocks must be indented",
+    "timeoutSeconds": 300,
+    "difficulty": "INTERMEDIATE"
+  },
+  {
+    "chunkId": 7,
+    "instruction": "Learn Python loops",
+    "detailedInstruction": "Python loops are clean and readable:\n\n```python\n# Create loops.py\n\n# For loop with range()\nprint(\"Counting to 5:\")\nfor i in range(1, 6):  # range(start, stop) - stop is excluded\n    print(f\"Count: {i}\")\n\n# For loop with lists\nfruits = [\"apple\", \"banana\", \"orange\"]\nprint(\"\\nMy fruits:\")\nfor fruit in fruits:\n    print(f\"I like {fruit}\")\n\n# While loop\nprint(\"\\nCountdown:\")\ncountdown = 5\nwhile countdown > 0:\n    print(countdown)\n    countdown -= 1  # Same as countdown = countdown - 1\nprint(\"Blast off!\")\n\n# List comprehension (advanced but cool!)\nsquares = [x**2 for x in range(1, 6)]\nprint(f\"\\nSquares: {squares}\")\n```\n\nCreate loops.py and explore Python's loop power!",
+    "expectedActions": [
+      {
+        "type": "FILE_CREATED",
+        "target": "loops.py",
+        "pattern": ".*loops\\.py$"
+      }
+    ],
+    "hint": "range(1, 6) gives numbers 1, 2, 3, 4, 5 (stop excluded)",
+    "errorCorrection": "Remember indentation for loop bodies",
+    "timeoutSeconds": 360,
+    "difficulty": "INTERMEDIATE"
+  }
+]

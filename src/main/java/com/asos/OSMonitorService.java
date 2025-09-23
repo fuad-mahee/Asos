@@ -10,7 +10,6 @@ public class OSMonitorService {
     
     private FileSystemMonitor fileSystemMonitor;
     private ProcessMonitor processMonitor;
-    private Thread fileSystemThread;
     private Thread processThread;
     
     private Consumer<String> fileSystemListener;
@@ -39,7 +38,11 @@ public class OSMonitorService {
     
     public void startMonitoring(Path pathToWatch) {
         // Start file system monitoring with enhanced validation
-        FileSystemMonitor.ProgressListener fsListener = message -> {
+        fileSystemMonitor = new FileSystemMonitor();
+        
+        // Set up callback for file changes
+        fileSystemMonitor.setOnFileChange((filePath, content) -> {
+            String message = "File changed: " + filePath;
             if (fileSystemListener != null) {
                 fileSystemListener.accept(message);
             }
@@ -50,12 +53,10 @@ public class OSMonitorService {
                     EventValidator.validateFileSystemEvent(message, currentStepConfig);
                 validationListener.accept(validation);
             }
-        };
+        });
         
-        fileSystemMonitor = new FileSystemMonitor(pathToWatch, fsListener);
-        fileSystemThread = new Thread(fileSystemMonitor);
-        fileSystemThread.setDaemon(true);
-        fileSystemThread.start();
+        // Start the file system monitor
+        fileSystemMonitor.start();
         
         // Start process monitoring with enhanced validation
         ProcessMonitor.ProgressListener procListener = message -> {
@@ -80,12 +81,12 @@ public class OSMonitorService {
     }
     
     public void stopMonitoring() {
-        if (processMonitor != null) {
-            processMonitor.stop();
+        if (fileSystemMonitor != null) {
+            fileSystemMonitor.stop();
         }
         
-        if (fileSystemThread != null) {
-            fileSystemThread.interrupt();
+        if (processMonitor != null) {
+            processMonitor.stop();
         }
         
         if (processThread != null) {
@@ -96,12 +97,15 @@ public class OSMonitorService {
     }
     
     public boolean isMonitoring() {
-        return fileSystemThread != null && fileSystemThread.isAlive() &&
+        return fileSystemMonitor != null && processMonitor != null &&
                processThread != null && processThread.isAlive();
     }
     
     public void pauseMonitoring() {
         // Temporarily stop monitoring without full shutdown
+        if (fileSystemMonitor != null) {
+            fileSystemMonitor.stop();
+        }
         if (processMonitor != null) {
             processMonitor.stop();
         }

@@ -238,7 +238,7 @@ public class IntelligentLearningAssistant {
         
         // Add encouragement based on skill level
         if (userProfile.getSkillLevel() == UserProfileManager.SkillLevel.BEGINNER) {
-            processedResponse += "\n\n💡 Remember, everyone starts as a beginner. You're doing great by asking questions!";
+            processedResponse += "\n\nRemember, everyone starts as a beginner. You're doing great by asking questions!";
         }
         
         return processedResponse;
@@ -248,11 +248,11 @@ public class IntelligentLearningAssistant {
      * Add visual elements for visual learners
      */
     private String addVisualElements(String response) {
-        // Add emojis and visual indicators
-        response = response.replaceAll("\\b(step \\d+)", "📝 $1");
-        response = response.replaceAll("\\b(important|note|remember)", "⚠️ $1");
-        response = response.replaceAll("\\b(example|for instance)", "💡 $1");
-        response = response.replaceAll("\\b(tip|hint)", "💡 $1");
+        // Remove emojis for clean text interface
+        response = response.replaceAll("\\b(step \\d+)", "$1");
+        response = response.replaceAll("\\b(important|note|remember)", "$1");
+        response = response.replaceAll("\\b(example|for instance)", "$1");
+        response = response.replaceAll("\\b(tip|hint)", "$1");
         
         return response;
     }
@@ -458,7 +458,13 @@ public class IntelligentLearningAssistant {
             CompletableFuture<LearningResponse> future = processLearningQuery(query, context);
             LearningResponse response = future.get(); // Synchronous wait
             
-            return response.getContent();
+            // Check if response is valid and not an error
+            if (response != null && response.getContent() != null && !response.getContent().trim().isEmpty()) {
+                return response.getContent();
+            } else {
+                // Use enhanced fallback instead of generic error
+                return generateErrorResponse(query);
+            }
             
         } catch (Exception e) {
             logger.error("Error processing conversational query", e);
@@ -493,9 +499,29 @@ public class IntelligentLearningAssistant {
      * Generate error response for failed queries
      */
     private String generateErrorResponse(String query) {
-        return "I apologize, but I'm having trouble processing your question right now. " +
-               "Let me try to help you in a different way. Could you please rephrase your question " +
-               "or try asking something more specific about your learning goals?";
+        // Use the enhanced fallback response system instead of generic error
+        try {
+            // Analyze query intent for better fallback response
+            QueryIntent intent = analyzeQueryIntent(query);
+            UserProfileManager.UserProfile userProfile = profileManager.getCurrentProfile();
+            LearningResponse fallbackResponse = generateFallbackResponse(query, intent, userProfile);
+            return fallbackResponse.getContent();
+        } catch (Exception e) {
+            logger.error("Error generating fallback response", e);
+            // Last resort fallback
+            String lowerQuery = query.toLowerCase().trim();
+            
+            if (lowerQuery.contains("hello") || lowerQuery.contains("hi")) {
+                return "আছস? Hello! I'm here to help you learn. What would you like to explore today?";
+            }
+            
+            if (lowerQuery.contains("help")) {
+                return "I'm here to help! Let's break this down together. What specific topic are you working on?";
+            }
+            
+            return "আছস? I'm your learning companion! While my main AI is starting up, " +
+                   "I'm still here to help guide your learning journey. What can I help you discover today?";
+        }
     }
 
     public void setLearningMode(LearningMode mode) {

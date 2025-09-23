@@ -126,7 +126,7 @@ public class RealTimeFeedbackSystem extends VBox {
         confidenceDisplay.setAlignment(Pos.CENTER);
         
         confidenceLabel = new Label("Confidence: 50%");
-        confidenceLabel.setFont(Font.font("Segoe UI", FontWeight.BOLD, 14));
+        confidenceLabel.setFont(Font.font("Helvetica", FontWeight.NORMAL, 14));
         confidenceLabel.setTextFill(Color.DARKBLUE);
         
         confidenceBar = new ProgressBar(0.5);
@@ -136,8 +136,8 @@ public class RealTimeFeedbackSystem extends VBox {
         confidenceDisplay.getChildren().addAll(confidenceLabel, confidenceBar);
         
         // Streak counter
-        streakCounter = new Label("🔥 0");
-        streakCounter.setFont(Font.font("Segoe UI", FontWeight.BOLD, 16));
+        streakCounter = new Label("0");
+        streakCounter.setFont(Font.font("Helvetica", FontWeight.NORMAL, 16));
         streakCounter.setTextFill(Color.ORANGE);
         
         feedbackContainer.getChildren().addAll(statusIndicator, confidenceDisplay, streakCounter);
@@ -157,7 +157,7 @@ public class RealTimeFeedbackSystem extends VBox {
         }
         
         Label progressLabel = new Label("Learning Progress");
-        progressLabel.setFont(Font.font("Segoe UI", FontWeight.NORMAL, 12));
+        progressLabel.setFont(Font.font("Helvetica", FontWeight.NORMAL, 12));
         progressLabel.setTextFill(Color.GRAY);
         
         VBox progressContainer = new VBox(5);
@@ -175,9 +175,9 @@ public class RealTimeFeedbackSystem extends VBox {
                                "-fx-border-radius: 10; " +
                                "-fx-border-width: 1;");
         
-        Label validationTitle = new Label("📊 Real-time Analysis");
-        validationTitle.setFont(Font.font("Segoe UI", FontWeight.BOLD, 14));
-        validationTitle.setTextFill(Color.DARKBLUE);
+        Label validationTitle = new Label("Real-time Analysis");
+        validationTitle.setFont(Font.font("Helvetica", FontWeight.NORMAL, 14));
+        validationTitle.setTextFill(Color.WHITE);
         
         // Validation indicators will be added dynamically
         validationPanel.getChildren().add(validationTitle);
@@ -194,10 +194,8 @@ public class RealTimeFeedbackSystem extends VBox {
                           "-fx-border-radius: 10; " +
                           "-fx-border-width: 1;");
         
-        Label hintIcon = new Label("💡");
-        hintIcon.setFont(Font.font(20));
+        // Removed icon for clean UI
         
-        hintSystem.getChildren().add(hintIcon);
         hintSystem.setVisible(false);
     }
     
@@ -371,7 +369,7 @@ public class RealTimeFeedbackSystem extends VBox {
         switch (feedback) {
             case EXCELLENT:
                 indicatorColor = Color.GOLD;
-                feedbackText = "🌟 Excellent!";
+                feedbackText = "Excellent!";
                 showAchievement();
                 break;
             case GOOD:
@@ -421,21 +419,21 @@ public class RealTimeFeedbackSystem extends VBox {
     private void updateValidationPanel(String feedbackText, FeedbackType feedback) {
         validationPanel.getChildren().clear();
         
-        Label validationTitle = new Label("📊 Real-time Analysis");
-        validationTitle.setFont(Font.font("Segoe UI", FontWeight.BOLD, 14));
-        validationTitle.setTextFill(Color.DARKBLUE);
+        Label validationTitle = new Label("Real-time Analysis");
+        validationTitle.setFont(Font.font("Helvetica", FontWeight.NORMAL, 14));
+        validationTitle.setTextFill(Color.WHITE);
         
         Label feedbackLabel = new Label(feedbackText);
-        feedbackLabel.setFont(Font.font("Segoe UI", FontWeight.NORMAL, 13));
-        feedbackLabel.setTextFill(getFeedbackColor(feedback));
+        feedbackLabel.setFont(Font.font("Helvetica", FontWeight.NORMAL, 13));
+        feedbackLabel.setTextFill(Color.WHITE);
         
         // Add analytical insights
         if (analytics != null) {
             LearningAnalytics.LearningInsights insights = analytics.analyzeLearningProgress();
             Label velocityLabel = new Label(String.format("Learning Velocity: %.1f%%", 
                 insights.getLearningVelocity() * 100));
-            velocityLabel.setFont(Font.font("Segoe UI", FontWeight.NORMAL, 11));
-            velocityLabel.setTextFill(Color.GRAY);
+            velocityLabel.setFont(Font.font("Helvetica", FontWeight.NORMAL, 11));
+            velocityLabel.setTextFill(Color.WHITE);
             
             validationPanel.getChildren().addAll(validationTitle, feedbackLabel, velocityLabel);
         } else {
@@ -507,7 +505,7 @@ public class RealTimeFeedbackSystem extends VBox {
     private void updateStreak(boolean isCorrect) {
         if (isCorrect) {
             currentStreak++;
-            streakCounter.setText("🔥 " + currentStreak);
+            streakCounter.setText("" + currentStreak);
             
             // Animate streak counter for milestones
             if (currentStreak % 5 == 0) {
@@ -522,7 +520,7 @@ public class RealTimeFeedbackSystem extends VBox {
             }
         } else {
             currentStreak = 0;
-            streakCounter.setText("🔥 0");
+            streakCounter.setText("0");
         }
     }
     
@@ -539,16 +537,15 @@ public class RealTimeFeedbackSystem extends VBox {
         
         hintSystem.getChildren().clear();
         
-        Label hintIcon = new Label("💡");
-        hintIcon.setFont(Font.font(20));
+        // Removed icon for clean UI
         
         Label hintText = new Label(hint);
         hintText.setWrapText(true);
-        hintText.setFont(Font.font("Segoe UI", FontWeight.NORMAL, 12));
-        hintText.setTextFill(Color.DARKBLUE);
+        hintText.setFont(Font.font("Helvetica", FontWeight.NORMAL, 12));
+        hintText.setTextFill(Color.WHITE);
         hintText.setMaxWidth(300);
         
-        hintSystem.getChildren().addAll(hintIcon, hintText);
+        hintSystem.getChildren().addAll(hintText);
         hintSystem.setVisible(true);
         
         // Animate hint appearance

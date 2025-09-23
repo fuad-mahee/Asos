@@ -2,6 +2,7 @@ package com.asos;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import java.io.File;
 import java.io.IOException;
 import java.time.LocalDateTime;
@@ -23,6 +24,7 @@ public class UserProfileManager {
     
     public UserProfileManager() {
         this.objectMapper = new ObjectMapper();
+        this.objectMapper.registerModule(new JavaTimeModule());
         this.skillLevels = new ConcurrentHashMap<>();
         this.styleDetector = new LearningStyleDetector();
         loadOrCreateProfile();
