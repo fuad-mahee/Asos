@@ -24,7 +24,11 @@ public class TerminalMonitor {
     private String lastOutput = "";
     
     public TerminalMonitor() {
-        this.executorService = Executors.newCachedThreadPool();
+        this.executorService = Executors.newCachedThreadPool(r -> {
+            Thread t = new Thread(r, "terminal-monitor");
+            t.setDaemon(true);
+            return t;
+        });
     }
     
     /**
@@ -36,11 +40,11 @@ public class TerminalMonitor {
     }
     
     /**
-     * Stop monitoring terminal activity
+     * Stop monitoring terminal activity. The executor is kept alive (daemon
+     * threads) so monitoring can be restarted for the next teaching session.
      */
     public void stopMonitoring() {
         isMonitoring = false;
-        executorService.shutdown();
         logger.info("Stopped terminal monitoring");
     }
     
@@ -75,7 +79,15 @@ public class TerminalMonitor {
         
         processBuilder.directory(new File(System.getProperty("user.dir")));
         Process process = processBuilder.start();
-        
+
+        // Watchdog: kill runaway programs (e.g. infinite loops in learner code)
+        CompletableFuture.delayedExecutor(20, java.util.concurrent.TimeUnit.SECONDS).execute(() -> {
+            if (process.isAlive()) {
+                logger.warn("Command '{}' exceeded 20s, terminating", command);
+                process.destroyForcibly();
+            }
+        });
+
         // Capture output
         StringBuilder output = new StringBuilder();
         StringBuilder errorOutput = new StringBuilder();

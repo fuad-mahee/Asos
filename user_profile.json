@@ -1,3 +1,21 @@
 {
-  "userId" : "user_1757622781086",
-  "createdDate"
+  "userId" : "user_1758648397574",
+  "createdDate" : [ 2025, 9, 23, 23, 26, 37, 576883800 ],
+  "learningStyle" : "BALANCED",
+  "skillLevel" : "BEGINNER",
+  "preferences" : {
+    "animationSpeed" : 1.0,
+    "hintFrequency" : "NORMAL",
+    "feedbackVerbosity" : "NORMAL",
+    "preferredPacing" : "ADAPTIVE"
+  },
+  "performanceHistory" : [ ],
+  "sessionStats" : {
+    "totalSessions" : 0,
+    "totalLearningTime" : 0,
+    "totalStepsCompleted" : 0,
+    "totalErrors" : 0,
+    "averageSessionTime" : 0,
+    "averageCompletionRate" : 0.0
+  }
+}

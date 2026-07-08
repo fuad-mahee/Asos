@@ -2,7 +2,7 @@
   {
     "chunkId": 1,
     "instruction": "Create Hello.java file",
-    "detailedInstruction": "Welcome to Java programming! Let's start your journey:\n\n1. Open Visual Studio Code (VSCode)\n2. Navigate to your workspace folder\n3. Right-click in the file explorer\n4. Select 'New File' from the context menu\n5. Name the file 'Hello.java' (make sure it ends with .java)\n6. Press Enter to create the file\n\nWhy Java files end with .java: This extension tells the Java compiler that this is a Java source code file that needs to be compiled into bytecode.",
+    "detailedInstruction": "Welcome to Java programming! Let's start your journey:\n\n1. Open Visual Studio Code (VSCode)\n2. Navigate to your workspace folder\n3. Right-click in the file explorer\n4. Select 'New File' from the context menu\n5. Name the file 'Hello.java' (make sure it ends with .java)\n6. Press Enter to create the file\n\nWhy Java files end with .java: This extension tells the Java compiler that this is a Java source code file that needs to be compiled into bytecode.\n\nWHERE TO CREATE IT: Asos watches your Desktop, Documents, Downloads, and the Asos project folder (subfolders are fine too). Create the file in one of these places so Asos can detect it and move you to the next step!",
     "expectedActions": [
       {
         "type": "FILE_CREATED",
@@ -10,7 +10,7 @@
         "pattern": ".*Hello\\.java$"
       }
     ],
-    "hint": "Right-click in your workspace and select 'New File', then name it 'Hello.java'",
+    "hint": "Create 'Hello.java' on your Desktop or in Documents (right-click > New File). Asos will detect it automatically.",
     "errorCorrection": "Make sure the file extension is .java, not .txt",
     "timeoutSeconds": 120,
     "difficulty": "BEGINNER"

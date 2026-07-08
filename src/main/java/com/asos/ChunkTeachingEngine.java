@@ -41,6 +41,7 @@ public class ChunkTeachingEngine {
     private int consecutiveFastCompletions = 0;
     private int consecutiveSlowCompletions = 0;
     private boolean hintGiven = false;
+    private java.util.concurrent.ScheduledFuture<?> hintTask;
     
     // Progress tracking
     private LearningProgressManager progressManager;
@@ -57,7 +58,11 @@ public class ChunkTeachingEngine {
     public ChunkTeachingEngine() {
         this.monitor = new RealTimeMonitor();
         this.errorDetector = new ErrorDetectionEngine();
-        this.scheduler = Executors.newScheduledThreadPool(2);
+        this.scheduler = Executors.newScheduledThreadPool(2, r -> {
+            Thread t = new Thread(r, "teaching-engine");
+            t.setDaemon(true);
+            return t;
+        });
         this.objectMapper = new ObjectMapper();
         
         // Initialize progress tracking
@@ -90,14 +95,21 @@ public class ChunkTeachingEngine {
     }
     
     /**
-     * Extract language name from module file name
+     * Progress key for a module file. Uses the FULL module name so different
+     * modules of the same language (java-hello-world vs java-complete) don't
+     * overwrite each other's progress records.
      */
     private String extractLanguageFromModuleFile(String moduleFile) {
-        String baseName = moduleFile.replaceFirst("[.][^.]+$", ""); // Remove extension
-        if (baseName.contains("-")) {
-            return baseName.split("-")[0]; // Take first part before hyphen
-        }
-        return baseName;
+        return moduleFile.replaceFirst("[.][^.]+$", ""); // Remove extension
+    }
+
+    /**
+     * Human-readable course name for messages ("java-complete" -> "JAVA").
+     */
+    private String displayName() {
+        if (currentLanguage == null) return "";
+        int dash = currentLanguage.indexOf('-');
+        return (dash > 0 ? currentLanguage.substring(0, dash) : currentLanguage).toUpperCase();
     }
     
     /**
@@ -115,7 +127,8 @@ public class ChunkTeachingEngine {
         if (progressManager.isLanguageCompleted(currentLanguage)) {
             logger.info("Language {} already completed!", currentLanguage);
             if (onChunkCompleted != null) {
-                onChunkCompleted.accept("Congratulations! You've completed " + currentLanguage.toUpperCase() + " course!");
+                onChunkCompleted.accept(String.format(
+                        I18n.t("Congratulations! You've completed the %s course!"), displayName()));
             }
             return;
         }
@@ -194,14 +207,20 @@ public class ChunkTeachingEngine {
      */
     private void handleErrorDetected(String error) {
         logger.warn("Error detected: {}", error);
-        
-        String correction = currentChunk.getErrorCorrection();
-        if (correction == null) {
-            correction = "Please check your work and try again.";
+
+        // Prefer the specific error (e.g. "Typo: 'Systm' should be 'System'") so
+        // the learner knows exactly what to fix; fall back to the chunk's generic
+        // correction message when no specifics are available.
+        String message = (error != null && !error.isBlank()) ? error : null;
+        if (message == null && currentChunk != null) {
+            message = currentChunk.getErrorCorrection();
         }
-        
+        if (message == null) {
+            message = I18n.t("Please check your work and try again.");
+        }
+
         if (onErrorDetected != null) {
-            onErrorDetected.accept(correction);
+            onErrorDetected.accept(message);
         }
     }
     
@@ -209,18 +228,21 @@ public class ChunkTeachingEngine {
      * Complete current chunk and move to next
      */
     private void completeCurrentChunk() {
+        // A hint scheduled for this chunk must not fire during the next one
+        cancelPendingHint();
+
         long completionTime = System.currentTimeMillis() - chunkStartTime;
         analyzeCompletionTime(completionTime);
         
-        // Save progress for current chunk
-        if (progressManager != null && currentLanguage != null) {
-            progressManager.completeChunk(currentLanguage, currentChunkIndex);
+        // Save progress for current chunk (chunk IDs are 1-based)
+        if (progressManager != null && currentLanguage != null && currentChunk != null) {
+            progressManager.completeChunk(currentLanguage, currentChunk.getChunkId());
             progressStorage.saveProgress(progressManager);
-            logger.info("Progress saved: {} chunk {} completed", currentLanguage, currentChunkIndex);
+            logger.info("Progress saved: {} chunk {} completed", currentLanguage, currentChunk.getChunkId());
         }
         
         if (onChunkCompleted != null) {
-            onChunkCompleted.accept("Great job! Moving to next step...");
+            onChunkCompleted.accept(I18n.t("Great job! Moving to next step..."));
         }
         
         // Adaptive pacing: merge chunks if user is fast
@@ -292,14 +314,14 @@ public class ChunkTeachingEngine {
      */
     private void scheduleHintIfNeeded() {
         int hintDelaySeconds = Math.max(currentChunk.getTimeoutSeconds() / 3, 30); // 1/3 of timeout or 30 seconds
-        
-        scheduler.schedule(() -> {
+
+        hintTask = scheduler.schedule(() -> {
             if (!monitor.areAllActionsCompleted() && !hintGiven) {
                 hintGiven = true;
                 Platform.runLater(() -> {
                     if (onHintProvided != null) {
                         String hint = currentChunk.getHint();
-                        if (hint == null) hint = "Take your time and follow the instructions step by step.";
+                        if (hint == null) hint = I18n.t("Take your time and follow the instructions step by step.");
                         onHintProvided.accept(hint);
                     }
                 });
@@ -312,24 +334,39 @@ public class ChunkTeachingEngine {
      */
     private void completeTeachingSession() {
         monitor.stopMonitoring();
-        
+
+        // Mark the whole module complete so the progress record reaches 100%
+        // even when adaptive pacing merged chunks along the way
+        if (progressManager != null && currentLanguage != null) {
+            progressManager.markLanguageCompleted(currentLanguage);
+            progressStorage.saveProgress(progressManager);
+        }
+
         if (onProgressUpdate != null) {
             onProgressUpdate.accept(1.0);
         }
-        
+
         if (onChunkCompleted != null) {
-            onChunkCompleted.accept("Congratulations! You've completed the entire learning module!");
+            onChunkCompleted.accept(I18n.t("Congratulations! You've completed the entire learning module!"));
         }
-        
+
         logger.info("Teaching session completed successfully");
     }
     
+    private void cancelPendingHint() {
+        if (hintTask != null) {
+            hintTask.cancel(false);
+            hintTask = null;
+        }
+    }
+
     /**
-     * Stop the teaching session
+     * Stop the teaching session. The engine stays usable so a new module
+     * can be loaded and started afterwards.
      */
     public void stopTeaching() {
+        cancelPendingHint();
         monitor.stopMonitoring();
-        scheduler.shutdown();
     }
     
     // Callback setters
@@ -343,4 +380,7 @@ public class ChunkTeachingEngine {
     public int getCurrentChunkIndex() { return currentChunkIndex; }
     public int getTotalChunks() { return learningChunks != null ? learningChunks.size() : 0; }
     public LearningChunk getCurrentChunk() { return currentChunk; }
+
+    /** Human-readable name of the active course ("java-complete" -> "JAVA"), or "" if none. */
+    public String getCourseDisplayName() { return displayName(); }
 }

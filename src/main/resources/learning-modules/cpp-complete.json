@@ -2,7 +2,7 @@
   {
     "chunkId": 1,
     "instruction": "Create hello.cpp file",
-    "detailedInstruction": "Welcome to C++ programming! C++ is a powerful, fast language used for games, systems, and more:\n\n1. Open Visual Studio Code (VSCode)\n2. Navigate to your workspace folder\n3. Right-click in the file explorer\n4. Select 'New File' from the context menu\n5. Name the file 'hello.cpp' (note the .cpp extension)\n6. Press Enter to create the file\n\nWhy .cpp extension: C++ files use .cpp (or .cc, .cxx). The 'pp' stands for 'plus plus'. C++ needs to be compiled before running, similar to Java but different from Python.",
+    "detailedInstruction": "Welcome to C++ programming! C++ is a powerful, fast language used for games, systems, and more:\n\n1. Open Visual Studio Code (VSCode)\n2. Navigate to your workspace folder\n3. Right-click in the file explorer\n4. Select 'New File' from the context menu\n5. Name the file 'hello.cpp' (note the .cpp extension)\n6. Press Enter to create the file\n\nWhy .cpp extension: C++ files use .cpp (or .cc, .cxx). The 'pp' stands for 'plus plus'. C++ needs to be compiled before running, similar to Java but different from Python.\n\nWHERE TO CREATE IT: Asos watches your Desktop, Documents, Downloads, and the Asos project folder (subfolders are fine too). Create the file in one of these places so Asos can detect it and move you to the next step!",
     "expectedActions": [
       {
         "type": "FILE_CREATED",
@@ -10,7 +10,7 @@
         "pattern": ".*hello\\.cpp$"
       }
     ],
-    "hint": "Right-click in workspace, select 'New File', name it 'hello.cpp'",
+    "hint": "Create 'hello.cpp' on your Desktop or in Documents (right-click > New File). Asos will detect it automatically.",
     "errorCorrection": "Make sure the extension is .cpp, not .c or .txt",
     "timeoutSeconds": 120,
     "difficulty": "BEGINNER"
@@ -42,11 +42,6 @@
     "detailedInstruction": "C++ must be compiled before running. Let's compile it:\n\n1. Save your hello.cpp file (Ctrl+S or Cmd+S)\n2. Open terminal in VSCode (View → Terminal)\n3. Compile with this command:\n   g++ hello.cpp -o hello\n   \n   OR if g++ isn't installed:\n   clang++ hello.cpp -o hello\n\nWhat this does:\n• 'g++' or 'clang++' - C++ compiler\n• 'hello.cpp' - Your source file\n• '-o hello' - Output executable named 'hello'\n\nIf successful, you'll see no errors and a new executable file will be created. If you see errors, read them carefully - they'll guide you to fix syntax issues.",
     "expectedActions": [
       {
-        "type": "TERMINAL_OUTPUT",
-        "target": "g++",
-        "pattern": ".*"
-      },
-      {
         "type": "COMPILE_SUCCESS",
         "target": "hello.cpp",
         "pattern": "hello"
@@ -63,13 +58,13 @@
     "detailedInstruction": "Now let's run your compiled C++ program:\n\n1. In terminal, type:\n   ./hello     (on Mac/Linux)\n   OR\n   hello.exe   (on Windows)\n\n2. Press Enter\n\nWhat happens:\n• The executable file contains machine code\n• Your operating system runs it directly\n• Much faster than interpreted languages\n• You should see 'Hello, World!' printed\n\nNote the './' prefix on Mac/Linux - this tells the system to run the file in the current directory.",
     "expectedActions": [
       {
-        "type": "TERMINAL_OUTPUT",
-        "target": "./hello",
+        "type": "RUN_SUCCESS",
+        "target": "hello.cpp",
         "pattern": "Hello.*World"
       }
     ],
-    "hint": "Type './hello' on Mac/Linux or 'hello.exe' on Windows",
-    "errorCorrection": "Make sure you compiled successfully first",
+    "hint": "Type './hello' on Mac/Linux or 'hello.exe' on Windows. Asos verifies your program's output automatically.",
+    "errorCorrection": "Make sure you compiled successfully first and your program prints 'Hello, World!'",
     "timeoutSeconds": 120,
     "difficulty": "BEGINNER"
   },

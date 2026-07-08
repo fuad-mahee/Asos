@@ -1,5 +1,6 @@
 package com.asos;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
@@ -7,6 +8,7 @@ import java.util.Map;
 /**
  * Data classes for JSON pathway configuration
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class PathwayConfig {
     
     @JsonProperty("id")
@@ -70,6 +72,7 @@ public class PathwayConfig {
     public AdaptivityConfig getAdaptivity() { return adaptivity; }
     public void setAdaptivity(AdaptivityConfig adaptivity) { this.adaptivity = adaptivity; }
     
+    @JsonIgnoreProperties(ignoreUnknown = true)
     public static class CharacterConfig {
         @JsonProperty("welcomeMessage")
         private String welcomeMessage;
@@ -84,6 +87,7 @@ public class PathwayConfig {
         public void setCompletionMessage(String completionMessage) { this.completionMessage = completionMessage; }
     }
     
+    @JsonIgnoreProperties(ignoreUnknown = true)
     public static class StepConfig {
         @JsonProperty("stepNumber")
         private int stepNumber;
@@ -135,6 +139,7 @@ public class PathwayConfig {
         public void setHints(List<String> hints) { this.hints = hints; }
     }
     
+    @JsonIgnoreProperties(ignoreUnknown = true)
     public static class ValidationConfig {
         @JsonProperty("processNames")
         private List<String> processNames;
@@ -216,6 +221,7 @@ public class PathwayConfig {
         public void setCurrentPath(List<String> currentPath) { this.currentPath = currentPath; }
     }
     
+    @JsonIgnoreProperties(ignoreUnknown = true)
     public static class AdaptivityConfig {
         @JsonProperty("fastLearner")
         private LearnerConfig fastLearner;
@@ -235,7 +241,8 @@ public class PathwayConfig {
         public LearnerConfig getErrorProne() { return errorProne; }
         public void setErrorProne(LearnerConfig errorProne) { this.errorProne = errorProne; }
         
-        public static class LearnerConfig {
+        @JsonIgnoreProperties(ignoreUnknown = true)
+    public static class LearnerConfig {
             @JsonProperty("threshold")
             private int threshold;
             

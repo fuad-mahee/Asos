@@ -1,6 +1,7 @@
 package com.asos;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.LocalDateTime;
 import java.util.HashMap;
@@ -95,7 +96,9 @@ public class LearningProgressManager {
         
         private void updateProgress() {
             int completedCount = (int) completedChunks.values().stream().mapToInt(b -> b ? 1 : 0).sum();
-            progressPercentage = totalChunks > 0 ? (double) completedCount / totalChunks * 100.0 : 0.0;
+            progressPercentage = totalChunks > 0
+                    ? Math.min(100.0, (double) completedCount / totalChunks * 100.0)
+                    : 0.0;
         }
         
         public void addTimeSpent(long seconds) {
@@ -154,12 +157,50 @@ public class LearningProgressManager {
         LanguageProgress progress = languageProgress.get(language);
         return progress != null && progress.isCompleted();
     }
+
+    /**
+     * Number of chunks actually completed - the correct measure for progress
+     * display (currentChunkId is the NEXT chunk to do, and starts at 1).
+     */
+    public int getCompletedChunkCount(String language) {
+        LanguageProgress progress = languageProgress.get(language);
+        if (progress == null) return 0;
+        int count = (int) progress.getCompletedChunks().values().stream()
+                .filter(Boolean::booleanValue).count();
+        int total = progress.getTotalChunks();
+        return total > 0 ? Math.min(count, total) : count;
+    }
+
+    /**
+     * Total chunk count recorded for a language/module, or 0 if never started.
+     */
+    public int getTotalChunks(String language) {
+        LanguageProgress progress = languageProgress.get(language);
+        return progress != null ? progress.getTotalChunks() : 0;
+    }
+
+    /**
+     * Mark a whole language/module as finished (used when the teaching session
+     * completes, so merged chunks can't leave the record at 99%).
+     */
+    public void markLanguageCompleted(String language) {
+        LanguageProgress progress = languageProgress.get(language);
+        if (progress != null) {
+            for (int chunkId = 1; chunkId <= progress.getTotalChunks(); chunkId++) {
+                progress.getCompletedChunks().putIfAbsent(chunkId, true);
+            }
+            progress.setCompleted(true);
+            progress.setProgressPercentage(100.0);
+            progress.setLastAccessed(LocalDateTime.now());
+        }
+    }
     
     public double getLanguageProgressPercentage(String language) {
         LanguageProgress progress = languageProgress.get(language);
         return progress != null ? progress.getProgressPercentage() : 0.0;
     }
     
+    @JsonIgnore // derived view - the languageProgress field is the stored data
     public Map<String, LanguageProgress> getAllProgress() {
         return languageProgress;
     }
@@ -175,6 +216,7 @@ public class LearningProgressManager {
     /**
      * Get a summary of all language progress for display
      */
+    @JsonIgnore // derived display text - must not be serialized/deserialized
     public String getProgressSummary() {
         StringBuilder summary = new StringBuilder();
         summary.append("Learning Progress Summary:\n");

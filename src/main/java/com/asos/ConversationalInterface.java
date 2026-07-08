@@ -94,11 +94,11 @@ public class ConversationalInterface {
         header.setPadding(new Insets(10));
         header.getStyleClass().add("conversation-header");
         
-        Label titleLabel = new Label("AI Learning Assistant");
-        titleLabel.setFont(Font.font("Helvetica", FontWeight.NORMAL, 16));
+        Label titleLabel = new Label(I18n.t("AI Learning Assistant"));
+        titleLabel.setFont(Font.font("Segoe UI", FontWeight.SEMI_BOLD, 15));
         titleLabel.getStyleClass().add("conversation-title");
-        
-        Label modeLabel = new Label("Mode:");
+
+        Label modeLabel = new Label(I18n.t("Mode:"));
         modeLabel.getStyleClass().add("mode-label");
         
         conversationModeSelector = new ComboBox<>();
@@ -106,7 +106,7 @@ public class ConversationalInterface {
         conversationModeSelector.setValue(CONVERSATION_MODES[0]);
         conversationModeSelector.getStyleClass().add("mode-selector");
         
-        Button clearButton = new Button("Clear Chat");
+        Button clearButton = new Button(I18n.t("Clear Chat"));
         clearButton.getStyleClass().add("clear-button");
         clearButton.setOnAction(e -> clearConversation());
         
@@ -122,8 +122,7 @@ public class ConversationalInterface {
         suggestions.setPadding(new Insets(10));
         suggestions.getStyleClass().add("suggestions-box");
         
-        Label suggestionsLabel = new Label("Quick Start:");
-        suggestionsLabel.setFont(Font.font("Helvetica", FontWeight.NORMAL, 12));
+        Label suggestionsLabel = new Label(I18n.t("QUICK START"));
         suggestionsLabel.getStyleClass().add("suggestions-label");
         
         FlowPane suggestionsFlow = new FlowPane(5, 5);
@@ -152,11 +151,11 @@ public class ConversationalInterface {
         inputArea.getStyleClass().add("input-area");
         
         inputField = new TextField();
-        inputField.setPromptText("Type your question or ask for help...");
+        inputField.setPromptText(I18n.t("Type your question or ask for help..."));
         inputField.getStyleClass().add("message-input");
         inputField.setPrefHeight(40);
         
-        sendButton = new Button("Send");
+        sendButton = new Button(I18n.t("Send"));
         sendButton.getStyleClass().add("send-button");
         sendButton.setPrefHeight(40);
         sendButton.setDefaultButton(true);
@@ -222,7 +221,7 @@ public class ConversationalInterface {
         HBox messageBox = new HBox();
         messageBox.getStyleClass().add("user-message-box");
         messageBox.setAlignment(Pos.CENTER_RIGHT);
-        messageBox.setMaxWidth(400);
+        messageBox.setMaxWidth(460);
         
         TextFlow textFlow = new TextFlow();
         Text messageText = new Text(message);
@@ -243,31 +242,35 @@ public class ConversationalInterface {
     }
     
     private void addAiMessage(String message) {
-        VBox messageContainer = new VBox(5);
-        messageContainer.getStyleClass().add("ai-message-container");
-        messageContainer.setAlignment(Pos.CENTER_LEFT);
-        
+        HBox messageRow = new HBox(8);
+        messageRow.getStyleClass().add("ai-message-container");
+        messageRow.setAlignment(Pos.TOP_LEFT);
+
+        // Small avatar badge for the assistant
+        Label avatar = new Label("A");
+        avatar.getStyleClass().add("ai-avatar");
+
         HBox messageBox = new HBox();
         messageBox.getStyleClass().add("ai-message-box");
         messageBox.setAlignment(Pos.CENTER_LEFT);
-        messageBox.setMaxWidth(400);
-        
+        messageBox.setMaxWidth(460);
+
         TextFlow textFlow = new TextFlow();
         Text messageText = new Text(message);
         messageText.getStyleClass().add("ai-message-text");
         textFlow.getChildren().add(messageText);
-        
+
         Label timeLabel = new Label(getCurrentTime());
         timeLabel.getStyleClass().add("message-time");
-        
+
         VBox textContainer = new VBox(2);
         textContainer.getChildren().addAll(textFlow, timeLabel);
         textContainer.setAlignment(Pos.CENTER_LEFT);
-        
+
         messageBox.getChildren().add(textContainer);
-        messageContainer.getChildren().add(messageBox);
-        
-        conversationArea.getChildren().add(messageContainer);
+        messageRow.getChildren().addAll(avatar, messageBox);
+
+        conversationArea.getChildren().add(messageRow);
     }
     
     private void addSystemMessage(String message) {
@@ -284,14 +287,14 @@ public class ConversationalInterface {
     }
     
     private void addWelcomeMessage() {
-        String welcomeText = "Welcome to your AI Learning Assistant! 🎓\n\n" +
+        String welcomeText = I18n.t("Welcome to your AI Learning Assistant! 🎓\n\n" +
                            "I'm here to help you with:\n" +
                            "• Understanding complex concepts\n" +
                            "• Study planning and organization\n" +
                            "• Programming and technical questions\n" +
                            "• Career guidance and advice\n\n" +
-                           "Choose a conversation mode above or use the quick start suggestions below. How can I help you today?";
-        
+                           "Choose a conversation mode above or use the quick start suggestions below. How can I help you today?");
+
         Platform.runLater(() -> addAiMessage(welcomeText));
     }
     
@@ -309,6 +312,9 @@ public class ConversationalInterface {
         inputField.setDisable(false);
     }
     
+    /** The Text node of the AI bubble currently being streamed into, if any. */
+    private Text streamingText;
+
     private void getAiResponse(String userMessage) {
         Task<String> aiResponseTask = new Task<String>() {
             @Override
@@ -317,45 +323,98 @@ public class ConversationalInterface {
                 String currentMode = conversationModeSelector.getValue();
                 conversationContext.put("mode", currentMode);
                 conversationContext.put("timestamp", getCurrentTime());
-                
-                // Get AI response with context
-                return aiAssistant.processQuery(userMessage, conversationContext);
+
+                // Stream the answer token-by-token into the chat bubble
+                return aiAssistant.processQueryStreaming(userMessage, conversationContext,
+                        token -> Platform.runLater(() -> appendStreamingToken(token)));
             }
-            
+
             @Override
             protected void succeeded() {
-                Platform.runLater(() -> {
-                    hideTypingIndicator();
-                    String response = getValue();
-                    if (response != null && !response.trim().isEmpty()) {
-                        addAiMessage(response);
-                    } else {
-                        addAiMessage("I apologize, but I'm having trouble generating a response right now. Please try rephrasing your question.");
-                    }
-                });
+                Platform.runLater(() -> finishStreaming(getValue()));
             }
-            
+
             @Override
             protected void failed() {
-                Platform.runLater(() -> {
-                    hideTypingIndicator();
-                    addAiMessage("I apologize, but I encountered an error while processing your request. Please try again.");
-                });
+                Platform.runLater(() -> finishStreaming(null));
             }
         };
-        
-        // Simulate AI thinking time (1-3 seconds)
-        Thread aiThread = new Thread(() -> {
-            try {
-                Thread.sleep(1000 + (int)(Math.random() * 2000));
-                aiResponseTask.run();
-            } catch (InterruptedException e) {
-                Thread.currentThread().interrupt();
-            }
-        });
-        
+
+        Thread aiThread = new Thread(aiResponseTask);
         aiThread.setDaemon(true);
         aiThread.start();
+    }
+
+    /**
+     * Append one streamed piece to the AI bubble, creating the bubble on the
+     * first piece (the spinner disappears the moment words start flowing, but
+     * the input stays disabled until the answer is complete).
+     */
+    private void appendStreamingToken(String token) {
+        if (streamingText == null) {
+            typingIndicator.setVisible(false);
+            streamingText = createStreamingAiBubble();
+        }
+        streamingText.setText(streamingText.getText() + token);
+    }
+
+    /**
+     * Finish (or clean up) a streamed answer. finalText is the authoritative
+     * full response, or null if the task failed.
+     */
+    private void finishStreaming(String finalText) {
+        hideTypingIndicator();
+
+        if (streamingText == null) {
+            // Nothing was streamed (e.g. an error before the first token)
+            if (finalText != null && !finalText.trim().isEmpty()) {
+                addAiMessage(finalText);
+            } else {
+                addAiMessage("I apologize, but I'm having trouble generating a response right now. Please try rephrasing your question.");
+            }
+        } else if (finalText != null && !finalText.trim().isEmpty()
+                && !finalText.equals(streamingText.getText())) {
+            // Keep the bubble consistent with the authoritative final text
+            streamingText.setText(finalText);
+        }
+
+        streamingText = null;
+    }
+
+    /**
+     * Create an empty AI message bubble (same layout as addAiMessage) and
+     * return its Text node for incremental appends.
+     */
+    private Text createStreamingAiBubble() {
+        HBox messageRow = new HBox(8);
+        messageRow.getStyleClass().add("ai-message-container");
+        messageRow.setAlignment(Pos.TOP_LEFT);
+
+        Label avatar = new Label("A");
+        avatar.getStyleClass().add("ai-avatar");
+
+        HBox messageBox = new HBox();
+        messageBox.getStyleClass().add("ai-message-box");
+        messageBox.setAlignment(Pos.CENTER_LEFT);
+        messageBox.setMaxWidth(460);
+
+        TextFlow textFlow = new TextFlow();
+        Text messageText = new Text("");
+        messageText.getStyleClass().add("ai-message-text");
+        textFlow.getChildren().add(messageText);
+
+        Label timeLabel = new Label(getCurrentTime());
+        timeLabel.getStyleClass().add("message-time");
+
+        VBox textContainer = new VBox(2);
+        textContainer.getChildren().addAll(textFlow, timeLabel);
+        textContainer.setAlignment(Pos.CENTER_LEFT);
+
+        messageBox.getChildren().add(textContainer);
+        messageRow.getChildren().addAll(avatar, messageBox);
+
+        conversationArea.getChildren().add(messageRow);
+        return messageText;
     }
     
     private void clearConversation() {
@@ -418,6 +477,18 @@ public class ConversationalInterface {
     
     public void addContextualInformation(String key, String value) {
         conversationContext.put(key, value);
+    }
+
+    /**
+     * Programmatically ask a question, as if the user typed and sent it.
+     * If the AI is currently answering, the question is left in the input
+     * field so the user can send it when ready.
+     */
+    public void askQuestion(String question) {
+        Platform.runLater(() -> {
+            inputField.setText(question);
+            sendMessage();
+        });
     }
     
     public boolean isAiCurrentlyTyping() {

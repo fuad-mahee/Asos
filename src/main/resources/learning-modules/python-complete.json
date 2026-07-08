@@ -2,7 +2,7 @@
   {
     "chunkId": 1,
     "instruction": "Create hello.py file",
-    "detailedInstruction": "Welcome to Python programming! Python is beginner-friendly and powerful:\n\n1. Open Visual Studio Code (VSCode)\n2. Navigate to your workspace folder\n3. Right-click in the file explorer\n4. Select 'New File' from the context menu\n5. Name the file 'hello.py' (note the .py extension)\n6. Press Enter to create the file\n\nWhy .py extension: This tells your computer and editor that this file contains Python code. Python files don't need compilation like Java - they run directly!",
+    "detailedInstruction": "Welcome to Python programming! Python is beginner-friendly and powerful:\n\n1. Open Visual Studio Code (VSCode)\n2. Navigate to your workspace folder\n3. Right-click in the file explorer\n4. Select 'New File' from the context menu\n5. Name the file 'hello.py' (note the .py extension)\n6. Press Enter to create the file\n\nWhy .py extension: This tells your computer and editor that this file contains Python code. Python files don't need compilation like Java - they run directly!\n\nWHERE TO CREATE IT: Asos watches your Desktop, Documents, Downloads, and the Asos project folder (subfolders are fine too). Create the file in one of these places so Asos can detect it and move you to the next step!",
     "expectedActions": [
       {
         "type": "FILE_CREATED",
@@ -10,7 +10,7 @@
         "pattern": ".*hello\\.py$"
       }
     ],
-    "hint": "Right-click in workspace, select 'New File', name it 'hello.py'",
+    "hint": "Create 'hello.py' on your Desktop or in Documents (right-click > New File). Asos will detect it automatically.",
     "errorCorrection": "Make sure the extension is .py, not .txt",
     "timeoutSeconds": 120,
     "difficulty": "BEGINNER"
@@ -37,13 +37,13 @@
     "detailedInstruction": "Running Python is simple - no compilation needed:\n\n1. Save your hello.py file (Ctrl+S or Cmd+S)\n2. Open the terminal in VSCode (View → Terminal)\n3. Type this command and press Enter:\n   python hello.py\n   \n   OR (if python doesn't work):\n   python3 hello.py\n\nWhat happens:\n• Python interpreter reads your .py file directly\n• It executes each line of code immediately\n• No intermediate compilation step needed\n• You should see 'Hello, World!' printed\n\nThis is called 'interpreted' vs 'compiled' language!",
     "expectedActions": [
       {
-        "type": "TERMINAL_OUTPUT",
-        "target": "python",
+        "type": "RUN_SUCCESS",
+        "target": "hello.py",
         "pattern": "Hello.*World"
       }
     ],
-    "hint": "In terminal, type 'python hello.py' or 'python3 hello.py'",
-    "errorCorrection": "Try both 'python' and 'python3' commands",
+    "hint": "In terminal, type 'python hello.py' or 'python3 hello.py'. Asos verifies your program's output automatically.",
+    "errorCorrection": "Make sure your program prints 'Hello, World!' - check the text inside print()",
     "timeoutSeconds": 180,
     "difficulty": "BEGINNER"
   },

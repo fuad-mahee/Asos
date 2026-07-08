@@ -40,7 +40,7 @@
       "expectedActions": ["desktop_folder_opened", "location_changed"],
       "validation": {
         "currentPath": ["Desktop", "desktop"],
-        "windowTitle": ["Desktop"],
+        "windowTitles": ["Desktop"],
         "timeout": 45
       },
       "successMessage": "Great! You're now in the Desktop folder. Let's create a new folder here.",

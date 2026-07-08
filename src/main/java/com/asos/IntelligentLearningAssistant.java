@@ -453,9 +453,16 @@ public class IntelligentLearningAssistant {
             
             // Set learning mode based on conversation mode
             setLearningModeFromString(mode);
-            
+
+            // Ground the answer in the tutorial step the learner is currently
+            // on (set by the teaching engine), so "explain this step" works
+            String stepContext = contextMap.get("step_context");
+            String effectiveQuery = (stepContext != null && !stepContext.isBlank())
+                    ? query + "\n\n[The learner is currently on this tutorial step]\n" + stepContext
+                    : query;
+
             // Process query and get result
-            CompletableFuture<LearningResponse> future = processLearningQuery(query, context);
+            CompletableFuture<LearningResponse> future = processLearningQuery(effectiveQuery, context);
             LearningResponse response = future.get(); // Synchronous wait
             
             // Check if response is valid and not an error
@@ -472,6 +479,59 @@ public class IntelligentLearningAssistant {
         }
     }
     
+    /**
+     * Streaming variant of processQuery: identical prompt building and
+     * post-processing, but the answer is delivered piece-by-piece through
+     * onToken as the model generates it. Returns the final full text.
+     *
+     * onToken is invoked on a background thread - UI callers must hop to the
+     * FX thread themselves.
+     */
+    public String processQueryStreaming(String query, Map<String, String> contextMap,
+                                        java.util.function.Consumer<String> onToken) {
+        try {
+            String currentTopic = contextMap.getOrDefault("current_pathway", "general");
+            String mode = contextMap.getOrDefault("mode", "General Learning");
+            setLearningModeFromString(mode);
+
+            // Ground the answer in the tutorial step the learner is currently on
+            String stepContext = contextMap.get("step_context");
+            String effectiveQuery = (stepContext != null && !stepContext.isBlank())
+                    ? query + "\n\n[The learner is currently on this tutorial step]\n" + stepContext
+                    : query;
+
+            QueryIntent intent = analyzeQueryIntent(effectiveQuery);
+            UserProfileManager.UserProfile userProfile = profileManager.getCurrentProfile();
+
+            LocalAIEngine.AIContext aiContext = new LocalAIEngine.AIContext(
+                    userProfile.getLearningStyle().toString(), currentTopic);
+            aiContext.addMetadata("learning_mode", currentMode);
+            aiContext.addMetadata("query_intent", intent);
+
+            String enhancedPrompt = enhancePromptForLearning(effectiveQuery, intent, userProfile);
+
+            LocalAIEngine.AIResponse aiResponse =
+                    aiEngine.generateResponseStreaming(enhancedPrompt, aiContext, onToken).get();
+
+            String fullText = aiResponse.getText();
+            if (fullText == null || fullText.trim().isEmpty()) {
+                return generateErrorResponse(query);
+            }
+
+            // Post-processing may append an encouragement suffix; stream just
+            // the added part so the visible bubble matches the final text
+            String processed = postProcessEducationalResponse(fullText, intent, userProfile);
+            if (processed.length() > fullText.length() && processed.startsWith(fullText)) {
+                onToken.accept(processed.substring(fullText.length()));
+            }
+            return processed;
+
+        } catch (Exception e) {
+            logger.error("Error processing streaming query", e);
+            return generateErrorResponse(query);
+        }
+    }
+
     /**
      * Set learning mode from string representation
      */

@@ -1,0 +1,135 @@
+/* ============================================================
+   Asos - Large Text overlay (accessibility)
+   Applied AFTER dark-theme.css when the "Text Size: Large"
+   setting is on. Only bumps font sizes - colors and layout
+   stay defined in the base theme.
+   ============================================================ */
+
+.root {
+    -fx-font-size: 15px;
+}
+
+.corner-text {
+    -fx-font-size: 15px;
+}
+
+.corner-subtitle {
+    -fx-font-size: 13px;
+}
+
+.instruction-text {
+    -fx-font-size: 14px;
+}
+
+.instruction-detail-text {
+    -fx-font-size: 15.5px;
+}
+
+.instruction-detail-header {
+    -fx-font-size: 17px;
+}
+
+.menu-option {
+    -fx-font-size: 15px;
+}
+
+.menu-header {
+    -fx-font-size: 18px;
+}
+
+.menu-section-label {
+    -fx-font-size: 12px;
+}
+
+.notification-text {
+    -fx-font-size: 14px;
+}
+
+.language-button {
+    -fx-font-size: 14px;
+}
+
+.language-title {
+    -fx-font-size: 13px;
+}
+
+.ask-step-button {
+    -fx-font-size: 13px;
+}
+
+.stepper-label {
+    -fx-font-size: 12px;
+}
+
+.title-bar-text {
+    -fx-font-size: 15px;
+}
+
+.user-message-text, .ai-message-text {
+    -fx-font-size: 15px;
+}
+
+.message-time {
+    -fx-font-size: 12px;
+}
+
+.message-input, .text-field {
+    -fx-font-size: 15px;
+}
+
+.send-button, .button {
+    -fx-font-size: 15px;
+}
+
+.suggestion-button {
+    -fx-font-size: 13px;
+}
+
+.suggestions-label {
+    -fx-font-size: 13px;
+}
+
+.system-message {
+    -fx-font-size: 13px;
+}
+
+.stat-label {
+    -fx-font-size: 15px;
+}
+
+.stat-card-title {
+    -fx-font-size: 16px;
+}
+
+.stat-card-value {
+    -fx-font-size: 15px;
+}
+
+.no-data-label {
+    -fx-font-size: 15px;
+}
+
+.progress-title {
+    -fx-font-size: 22px;
+}
+
+.language-option {
+    -fx-font-size: 15px;
+}
+
+.achievement-chip, .achievement-chip-locked {
+    -fx-font-size: 13px;
+}
+
+.combo-box .list-cell,
+.combo-box-popup .list-view .list-cell {
+    -fx-font-size: 14px;
+}
+
+.clear-button {
+    -fx-font-size: 14px;
+}
+
+.mode-label {
+    -fx-font-size: 14px;
+}

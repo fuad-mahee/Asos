@@ -2,7 +2,7 @@
   {
     "chunkId": 1,
     "instruction": "Create Hello.java file",
-    "detailedInstruction": "Let's start your Java journey! Here's what you need to do:\n\n1. Open Visual Studio Code (VSCode)\n2. Navigate to your workspace folder\n3. Right-click in the file explorer\n4. Select 'New File' from the context menu\n5. Name the file 'Hello.java' (make sure it ends with .java)\n6. Press Enter to create the file\n\nWhy Java files end with .java: This extension tells the Java compiler that this is a Java source code file that needs to be compiled into bytecode.",
+    "detailedInstruction": "Let's start your Java journey! Here's what you need to do:\n\n1. Open Visual Studio Code (VSCode)\n2. Navigate to your workspace folder\n3. Right-click in the file explorer\n4. Select 'New File' from the context menu\n5. Name the file 'Hello.java' (make sure it ends with .java)\n6. Press Enter to create the file\n\nWhy Java files end with .java: This extension tells the Java compiler that this is a Java source code file that needs to be compiled into bytecode.\n\nWHERE TO CREATE IT: Asos watches your Desktop, Documents, Downloads, and the Asos project folder (subfolders are fine too). Create the file in one of these places so Asos can detect it and move you to the next step!",
     "expectedActions": [
       {
         "type": "FILE_CREATED",
@@ -10,7 +10,7 @@
         "pattern": ".*Hello\\.java$"
       }
     ],
-    "hint": "Right-click in your workspace and select 'New File', then name it 'Hello.java'",
+    "hint": "Create 'Hello.java' on your Desktop or in Documents (right-click > New File). Asos will detect it automatically.",
     "errorCorrection": "Make sure the file extension is .java, not .txt",
     "timeoutSeconds": 120,
     "difficulty": "BEGINNER"
@@ -42,16 +42,6 @@
     "detailedInstruction": "Great! Now let's compile your Java code into bytecode that the computer can understand:\n\n1. Save your Hello.java file (Ctrl+S or Cmd+S)\n2. Open the terminal in VSCode (View → Terminal)\n3. Navigate to your file's directory if needed\n4. Type this command and press Enter:\n   javac Hello.java\n\nWhat happens during compilation:\n• The Java compiler (javac) reads your .java file\n• It checks for syntax errors\n• If successful, it creates a Hello.class file (bytecode)\n• Bytecode can run on any computer with Java installed\n\nIf you see no output, that means compilation was successful! If you see errors, read them carefully - they'll tell you what to fix.",
     "expectedActions": [
       {
-        "type": "FILE_MODIFIED",
-        "target": "Hello.java",
-        "pattern": ".*"
-      },
-      {
-        "type": "TERMINAL_OUTPUT",
-        "target": "javac",
-        "pattern": ".*"
-      },
-      {
         "type": "COMPILE_SUCCESS",
         "target": "Hello.java",
         "pattern": "Hello\\.class"
@@ -67,11 +57,6 @@
     "instruction": "Run your program",
     "detailedInstruction": "Exciting! Let's run your compiled Java program:\n\n1. In the terminal, type this command:\n   java Hello\n2. Press Enter\n\nImportant notes:\n• Use 'java Hello' NOT 'java Hello.java'\n• When running, you use the class name without the file extension\n• Java will look for the Hello.class file (bytecode) to execute\n\nYou should see 'Hello World' printed in the terminal!\n\nWhat's happening:\n• The Java Virtual Machine (JVM) loads your bytecode\n• It finds the main method (the entry point)\n• It executes your System.out.println statement\n• The text appears in the console",
     "expectedActions": [
-      {
-        "type": "TERMINAL_OUTPUT",
-        "target": "java",
-        "pattern": "Hello World"
-      },
       {
         "type": "RUN_SUCCESS",
         "target": "Hello",
